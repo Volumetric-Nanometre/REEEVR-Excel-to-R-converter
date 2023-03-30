@@ -61,6 +61,20 @@ class VariableConverter:
         code = code.replace("'", "")
         return code, list_of_variables
 
+    @staticmethod
+    def variable_string_literal(sheet, cell):
+
+        varname = VariableConverter.excel_cell_to_variable(sheet,cell.coordinate)
+
+        return {varname :[f"\'{cell.value}\'",[]]}
+
+    @staticmethod
+    def variable_numeric_literal(sheet,cell):
+
+        varname = VariableConverter.excel_cell_to_variable(sheet, cell.coordinate)
+
+        return {varname :[cell.value,[]]}
+
 
 if __name__ == "__main__":
     sheet = "sheet 1"
