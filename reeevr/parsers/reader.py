@@ -1,5 +1,6 @@
 import openpyxl
-from openpyxl.formula import Tokenizer
+from reeevr.converters.variable import VariableConverter
+from reeevr.converters.formulae import FormulaeConverter
 
 class ExcelReader:
     """
@@ -26,13 +27,34 @@ class ExcelReader:
 
             for row in self.workbook[sheet].iter_rows():
                 for cell in row:
+                    self.cell_interpret(sheet,cell)
 
 
-
-    def cell_interpret(self,cell):
+    def cell_interpret(self,sheet,cell):
 
         # {'variable' : ["codeified string", ['list','of','contained','vars']]
         unorderedcell = {}
-        tokenString = Tokenizer(str(cell.value))
 
-        for
+        if cell.data_type == "n":
+            pass
+            #print(f"{cell.data_type}:{VariableConverter.variable_numeric_literal(sheet,cell)}")
+
+        elif cell.data_type == "s":
+            pass
+            #print(f"{cell.data_type}:{VariableConverter.variable_string_literal(sheet,cell)}")
+
+        elif cell.data_type == "f":
+
+            print(f"{cell.data_type}:{FormulaeConverter.general_formula_convert(sheet,cell)}")
+        else:
+            raise ValueError("Value type not recognised")
+
+        return unorderedcell
+
+if __name__ == "__main__":
+
+    path = "C:/Users/mo14776/OneDrive - University of Bristol/Documents/Health Economics/REEVER/Examples/Tests for the Excel- R conversion/test_workbook_3.xlsx"
+    a=ExcelReader(path)
+
+
+    a.read()
