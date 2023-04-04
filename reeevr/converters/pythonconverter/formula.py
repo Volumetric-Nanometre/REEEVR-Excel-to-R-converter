@@ -24,6 +24,12 @@ class PythonTransform(TraverseTree):
         if_state = if_state[:-1]
         if_state = if_state.split('%sep%')
 
+        if '=' in if_state[0]:
+            if ('<' or '>') in if_state[0]:
+                pass
+            else:
+                if_state[0] = if_state[0].replace("=", "==")
+
         indent = '    '
         code = f"def {expressionname}():\n" \
                f"{indent}if {if_state[0]}:\n" \
