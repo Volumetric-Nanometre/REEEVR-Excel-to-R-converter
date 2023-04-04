@@ -1,6 +1,9 @@
 import openpyxl
+from openpyxl.formula import Tokenizer
 from reeevr.converters.variable import VariableConverter
 from reeevr.converters.formulae import FormulaeConverter
+from reeevr.parsers.excelast import ExcelAST
+from reeevr.converters.pythonconverter.formula import PythonTransform
 
 class ExcelReader:
     """
@@ -37,15 +40,22 @@ class ExcelReader:
 
         if cell.data_type == "n":
             pass
-            #print(f"{cell.data_type}:{VariableConverter.variable_numeric_literal(sheet,cell)}")
+            print(f"{cell.data_type}:{VariableConverter.variable_numeric_literal(sheet,cell)}")
 
         elif cell.data_type == "s":
             pass
-            #print(f"{cell.data_type}:{VariableConverter.variable_string_literal(sheet,cell)}")
+            print(f"{cell.data_type}:{VariableConverter.variable_string_literal(sheet,cell)}")
 
         elif cell.data_type == "f":
 
-            print(f"{cell.data_type}:{FormulaeConverter.general_formula_convert(sheet,cell)}")
+            tokenizer = Tokenizer(cell.value)
+
+            cellAST = ExcelAST(tokenizer)
+            celltransform = PythonTransform(cellAST.AST,sheet,cell.coordinate)
+            celltransform.walk(celltransform.tree)
+            print(f"{cell.data_type}:{[celltransform.code,celltransform.variables]}")
+
+
         else:
             raise ValueError("Value type not recognised")
 
