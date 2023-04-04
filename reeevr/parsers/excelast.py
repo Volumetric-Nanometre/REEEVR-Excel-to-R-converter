@@ -6,6 +6,13 @@ class ParseNode:
         self.type = type
         self.value = value
 
+class OperandNode:
+
+    def __init__(self,type,subtype,value):
+        self.type = type
+        self.subtype = subtype
+        self.value = value
+
 class ExpressionNode:
 
     def __init__(self,type,name,params):
@@ -49,7 +56,7 @@ class ExcelAST:
                 pass
             elif token.type == 'OPERAND':
                 self.count += 1
-                nodelist.append(ParseNode("Operand", token.value))
+                nodelist.append(OperandNode("Operand",token.subtype, token.value))
             elif token.type == 'OPERATOR-INFIX':
                 self.count += 1
                 nodelist.append(ParseNode("InfixOperator", token.value))
@@ -71,55 +78,6 @@ class ExcelAST:
 
         return nodelist
 
-#    def if_function_constructor(self):
-#        """
-#        Method to output the runcode for an if statement test in a
-#        self-contained method.
-#
-#        :return: code string containing runcode for if statement
-#        """
-#
-#        indent = '    '
-#        code = ""
-#        code += f'def {self.funcname}_IF({self.LHS},{self.RHS},{self.A},{self.B}):\n'
-#        code += f'{indent}if {self.LHS} {self.comparator} {self.RHS}:\n'
-#        code += f'{indent}{indent}return {self.A}\n'
-#        code += f'{indent}else:\n'
-#        code += f'{indent}{indent}return {self.B}\n'
-#
-#        return code
-
-
-"""
-given sheet1!A1 = 1 + IF(sheet2!A3 = "yes",sheet4!A3 + 1,sheet2!A1 + 3)
-
-
-Need to return
-
-def funcname(LHS, RHS,A,B):
-    if LHS [comparator] RHS:
-        return A
-    else:
-        return B
-
-i.e
-def inner_sheet1A1_IF(sheet2_A3, "yes",sheet4_A3 +1,sheet2_A1 +3):
-    if LHS [comparator] RHS:
-        return A
-    else:
-        return B
-
-
-def outer_sheet1_A1_IF(inner_sheet1A1_IF, "",sum(W10:W20),sheet2_A1 +3):
-    if LHS [comparator] RHS:
-        return A
-    else:
-        return B
-        
-sheet1_A1 =outer_sheet1_A1_IF()
-
-"""
-
 
 if __name__ == "__main__":
     import json
@@ -130,5 +88,3 @@ if __name__ == "__main__":
     import jsonpickle
     serialized = jsonpickle.encode(a.AST)
     print( json.dumps(json.loads(serialized), indent=4))
-
-    #print(a.if_function_constructor("sheet2!A3","==",'"yes"',"sheet4!A3 + 1","sheet!2!A1 + 3","sheet1!A1"))
