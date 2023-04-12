@@ -4,18 +4,30 @@ from reeevr.converters.variable import VariableConverter
 from reeevr.converters.formulae import FormulaeConverter
 from reeevr.parsers.excelast import ExcelAST
 from reeevr.converters.pythonconverter.formula import PythonTransform
-
+from reeevr.converters.rconverter.formula import RTransform
 class ExcelReader:
     """
     Read the Excel workbook into an unordered
     dictionary.
     """
 
-    def __init__(self,workbookpath):
+    def __init__(self,workbookpath,outputlang):
+        self.supportedlanguages = {'python': PythonTransform, 'r' : RTransform}
+
         self.workbookpath = workbookpath
         self.workbook = openpyxl.load_workbook(self.workbookpath)
         self.unorderedcode = {}
         self.ignoredsheets = ['DSA', 'PSA']
+        self.outputlang = outputlang.lower()
+        self.converter = self.language_select()
+
+    def language_select(self):
+
+        try:
+            return self.supportedlanguages[self.outputlang]
+
+        except KeyError:
+            raise KeyError(f"Selected output language not supported: {self.outputlang}")
 
     def read(self):
         """
@@ -51,7 +63,7 @@ class ExcelReader:
             tokenizer = Tokenizer(cell.value)
 
             cellAST = ExcelAST(tokenizer)
-            celltransform = PythonTransform(cellAST.AST,sheet,cell.coordinate)
+            celltransform = self.converter(cellAST.AST,sheet,cell.coordinate)
             celltransform.walk(celltransform.tree)
             print(f"{cell.data_type}:{[celltransform.code,celltransform.variables]}")
 
@@ -64,7 +76,6 @@ class ExcelReader:
 if __name__ == "__main__":
 
     path = "C:/Users/mo14776/OneDrive - University of Bristol/Documents/Health Economics/REEVER/Examples/Tests for the Excel- R conversion/test_workbook_3.xlsx"
-    a=ExcelReader(path)
-
+    a=ExcelReader(path,"Python")
 
     a.read()
