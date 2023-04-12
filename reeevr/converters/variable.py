@@ -17,8 +17,9 @@ class VariableConverter:
         sheetname = str(sheet).strip()
         sheetname = sheetname.replace(" ", "")
         coordinate = coordinate.replace("$", "")
-
-        return f'{sheetname}_{coordinate}'
+        varname = f'{sheetname}_{coordinate}'
+        varname = varname.replace("'","")
+        return varname
 
     @staticmethod
     def defined_name_comparison(definednames, variable):
