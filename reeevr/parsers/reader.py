@@ -42,21 +42,19 @@ class ExcelReader:
 
             for row in self.workbook[sheet].iter_rows():
                 for cell in row:
-                    self.cell_interpret(sheet,cell)
+                    self.unorderedcode.update(self.cell_interpret(sheet,cell))
 
 
     def cell_interpret(self,sheet,cell):
 
         # {'variable' : ["codeified string", ['list','of','contained','vars']]
-        unorderedcell = {}
+        #unorderedcell
 
         if cell.data_type == "n":
-            pass
-            print(f"{cell.data_type}:{VariableConverter.variable_numeric_literal(sheet,cell)}")
+            unorderedcell = VariableConverter.variable_numeric_literal(sheet,cell)
 
         elif cell.data_type == "s":
-            pass
-            print(f"{cell.data_type}:{VariableConverter.variable_string_literal(sheet,cell)}")
+            unorderedcell = VariableConverter.variable_string_literal(sheet,cell)
 
         elif cell.data_type == "f":
 
@@ -65,8 +63,8 @@ class ExcelReader:
             cellAST = ExcelAST(tokenizer)
             celltransform = self.converter(cellAST.AST,sheet,cell.coordinate)
             celltransform.walk(celltransform.tree)
-            print(f"{cell.data_type}:{[celltransform.code,celltransform.variables]}")
 
+            unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables]}
 
         else:
             raise ValueError("Value type not recognised")
@@ -79,3 +77,4 @@ if __name__ == "__main__":
     a=ExcelReader(path,"Python")
 
     a.read()
+    [print(item) for item in a.unorderedcode.items()]
