@@ -20,6 +20,8 @@ class ExcelReader:
         self.ignoredsheets = ['DSA', 'PSA']
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
+        self.varconverter = VariableConverter(self.workbook)
+
 
     def language_select(self):
 
@@ -51,17 +53,17 @@ class ExcelReader:
         #unorderedcell
 
         if cell.data_type == "n":
-            unorderedcell = VariableConverter.variable_numeric_literal(sheet,cell)
+            unorderedcell = self.varconverter.variable_numeric_literal(sheet,cell)
 
         elif cell.data_type == "s":
-            unorderedcell = VariableConverter.variable_string_literal(sheet,cell)
+            unorderedcell = self.varconverter.variable_string_literal(sheet,cell)
 
         elif cell.data_type == "f":
 
             tokenizer = Tokenizer(cell.value)
 
             cellAST = ExcelAST(tokenizer)
-            celltransform = self.converter(cellAST.AST,sheet,cell.coordinate)
+            celltransform = self.converter(cellAST.AST,sheet,cell.coordinate,self.varconverter)
             celltransform.walk(celltransform.tree)
 
             unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables,cell.data_type]}

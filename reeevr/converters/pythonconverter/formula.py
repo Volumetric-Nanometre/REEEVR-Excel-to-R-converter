@@ -8,9 +8,9 @@ class PythonTransform(TraverseTree):
     """
 
 
-    def __init__(self,  excelast, sheet, coordinate):
+    def __init__(self,  excelast, sheet, coordinate, varconverter):
 
-        super().__init__(excelast, sheet, coordinate)
+        super().__init__(excelast, sheet, coordinate, varconverter)
         self.function_transformations = {"IF(": self.IF,
                                          "SUM(": self.SUM,
                                          "AVERAGE(": self.AVERAGE}
@@ -66,6 +66,6 @@ if __name__ == "__main__":
     serialized = jsonpickle.encode(excelAST.AST)
     #print(json.dumps(json.loads(serialized), indent=4))
 
-    test = PythonTransform(excelAST.AST, "Sheet10", "C10")
+    test = PythonTransform(excelAST.AST, "Sheet10", "C10","Sheet10_C10")
     test.walk(test.tree)
     print(test.code)

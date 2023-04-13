@@ -3,13 +3,14 @@ from reeevr.converters.variable import VariableConverter
 
 
 class TraverseTree:
-    def __init__(self, excelast, sheet, coordinate):
+    def __init__(self, excelast, sheet, coordinate,varconverter):
 
         self.tree = excelast.body
         self.depth = 0
         self.outputsheet = sheet
         self.outputcoordinate = coordinate
-        self.outputvarname = VariableConverter.excel_cell_to_variable(sheet, coordinate)
+        self.varconverter = varconverter
+        self.outputvarname = self.varconverter.excel_cell_to_variable(sheet, coordinate)
         self.count = 0
         self.code = ""
         self.function_transformations = {}
@@ -64,11 +65,11 @@ class TraverseTree:
                 sheet, coordinate = node.value.split('!')
 
             if ':' in node.value:
-                code,  variables = VariableConverter.excel_range_to_list(sheet, coordinate)
+                code,  variables = self.varconverter.excel_range_to_list(sheet, coordinate)
                 self.variables += variables
                 node.value = code
             else:
-                variable = VariableConverter.excel_cell_to_variable(sheet, coordinate)
+                variable = self.varconverter.excel_cell_to_variable(sheet, coordinate)
                 self.variables.append(variable)
                 node.value = variable
         else:
