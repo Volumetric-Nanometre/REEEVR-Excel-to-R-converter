@@ -74,8 +74,10 @@ class CodeGen:
                 print(f"{item[1][0]}")
 
         for output in self.outputs:
-
-            print(f"print(f'{{{output}}}')")
+            if output in self.culledcode.keys():
+                print(f"print(f'{{{output}}}')")
+            else:
+                raise KeyError("Request output does not exist")
 
 if __name__ == "__main__":
 
