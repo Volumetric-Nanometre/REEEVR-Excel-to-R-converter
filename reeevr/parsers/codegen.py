@@ -12,7 +12,9 @@ class CodeGen:
     def __init__(self, unorderedcode, outputs):
         self.unorderedcode = unorderedcode
         self.orderedcode = {}
+        self.culledcode = {}
         self.unusedcode = {}
+        self.outputs = outputs
         self.dependantvars = outputs
 
 
@@ -31,7 +33,6 @@ class CodeGen:
                 addtocode = True
 
                 for var in remainingcode[key][1]:
-
                     if var not in self.orderedcode.keys():
                         addtocode = False
                         break
@@ -48,6 +49,34 @@ class CodeGen:
 
             raise KeyError(f"Code cannot be ordered as the following variables are missing their corresponding dependancies: {errorstring}")
 
+    def cull_code_snippets(self):
+        """
+        Remove code snippets that are not outputs
+        or used to generate the output.
+
+        i.e prune the code tree of non-used code
+        """
+
+        for key in self.orderedcode.keys():
+
+            if key in self.dependantvars:
+                self.culledcode[key] = self.orderedcode[key]
+            else:
+                self.unusedcode[key] = self.orderedcode[key]
+
+    def generate_code(self):
+
+        for item in self.culledcode.items():
+
+            if item[1][2] != "f":
+                print(f"{item[0]} = {item[1][0]}")
+            else:
+                print(f"{item[1][0]}")
+
+        for output in self.outputs:
+
+            print(f"print(f'{{{output}}}')")
+
 if __name__ == "__main__":
 
     from reeevr.parsers.reader import ExcelReader
@@ -56,7 +85,9 @@ if __name__ == "__main__":
     a=ExcelReader(path,"Python")
 
     a.read()
-    b = CodeGen(a.unorderedcode, [])
+    outputs = ['Frontend_E8', 'Frontend_E9']
+    b = CodeGen(a.unorderedcode, outputs)
 
     b.order_code_snippets()
-    [print(item) for item in b.dependantvars]
+    b.cull_code_snippets()
+    b.generate_code()
