@@ -101,14 +101,14 @@ class VariableConverter:
 
         varname = self.excel_cell_to_variable(sheet,cell.coordinate)
 
-        return {varname :[f"\'{cell.value}\'",[]]}
+        return {varname :[f"\'{cell.value}\'",[],cell.data_type]}
 
 
     def variable_numeric_literal(self,sheet,cell):
 
         varname = self.excel_cell_to_variable(sheet, cell.coordinate)
 
-        return {varname :[cell.value,[]]}
+        return {varname :[cell.value,[],cell.data_type]}
 
 
 if __name__ == "__main__":

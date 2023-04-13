@@ -47,7 +47,7 @@ class ExcelReader:
 
     def cell_interpret(self,sheet,cell):
 
-        # {'variable' : ["codeified string", ['list','of','contained','vars']]
+        # {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]
         #unorderedcell
 
         if cell.data_type == "n":
@@ -64,7 +64,7 @@ class ExcelReader:
             celltransform = self.converter(cellAST.AST,sheet,cell.coordinate)
             celltransform.walk(celltransform.tree)
 
-            unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables]}
+            unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables,cell.data_type]}
 
         else:
             raise ValueError("Value type not recognised")
