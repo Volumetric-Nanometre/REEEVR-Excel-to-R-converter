@@ -43,7 +43,7 @@ class PythonTransform(TraverseTree):
 
     def SUM(self, params):
         simplesyntax = self.walk(params)
-        return f"math.sum({''.join(simplesyntax)}"
+        return f"numpy.sum({''.join(simplesyntax)}"
 
     def AVERAGE(self, params):
         """
