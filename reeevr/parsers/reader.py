@@ -1,7 +1,6 @@
 import openpyxl
 from openpyxl.formula import Tokenizer
 from reeevr.converters.variable import VariableConverter
-from reeevr.converters.formulae import FormulaeConverter
 from reeevr.parsers.excelast import ExcelAST
 from reeevr.converters.pythonconverter.formula import PythonTransform
 from reeevr.converters.rconverter.formula import RTransform
@@ -79,4 +78,3 @@ if __name__ == "__main__":
     a=ExcelReader(path,"Python")
 
     a.read()
-    [print(item) for item in a.unorderedcode.items()]
