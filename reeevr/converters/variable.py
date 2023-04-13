@@ -68,8 +68,8 @@ class VariableConverter:
 
         if variable in self.definednames.values():
 
-            definedname = str([key for key, value in self.definednames.items() if variable == value])
-            return definedname
+            definedname = [key for key, value in self.definednames.items() if variable == value ]
+            return definedname[0]
 
         else:
             return variable
