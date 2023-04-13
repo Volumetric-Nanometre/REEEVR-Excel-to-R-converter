@@ -8,9 +8,9 @@ class RTransform(TraverseTree):
     """
 
 
-    def __init__(self,  excelast, sheet, coordinate):
+    def __init__(self,  excelast, sheet, coordinate,varconverter):
 
-        super().__init__(excelast, sheet, coordinate)
+        super().__init__(excelast, sheet, coordinate,varconverter)
         self.function_transformations = {"IF(": self.IF,
                                          "SUM(": self.SUM,
                                          "AVERAGE(": self.AVERAGE}
