@@ -19,7 +19,7 @@ class ExcelReader:
         self.ignoredsheets = ['DSA', 'PSA']
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
-        self.varconverter = VariableConverter(self.workbook)
+        self.varconverter = VariableConverter(self.workbook,self.outputlang)
 
 
     def language_select(self):

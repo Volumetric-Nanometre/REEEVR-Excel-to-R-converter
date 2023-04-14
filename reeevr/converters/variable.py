@@ -6,8 +6,10 @@ class VariableConverter:
     standard method for continuity
     """
 
-    def __init__(self,workbook):
+    def __init__(self,workbook,language):
         self.definednames = {}
+        self.language = language
+        self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_vector}
         self.get_defined_names(workbook)
 
 
@@ -74,6 +76,12 @@ class VariableConverter:
         else:
             return variable
 
+    def excel_range(self, sheet, rangecoordinates):
+
+        try:
+            return self.supportedlanguages[self.language](sheet, rangecoordinates)
+        except KeyError:
+            raise
 
     def excel_range_to_list(self,sheet, rangecoordinates):
         """
@@ -94,6 +102,30 @@ class VariableConverter:
 
         code = str(list_of_variables)
         code = code.replace("'", "")
+        return code, list_of_variables
+
+    def excel_range_to_r_vector(self,sheet, rangecoordinates):
+        """
+        Convert an Excel range, eg A3:E10, into a
+        list containing all variables. Returns both a
+        code string where the entries are variable names,
+        and a list of the variables names used.
+        :param sheet: sheet name from workbook
+        :param rangecoordinates: Excel range coordinates, eg A3:E10
+        :return: code string representing the python list of variables
+        :return: list of the variable names used in the code string.
+        """
+        list_of_variables = []
+        celllist = cols_from_range(rangecoordinates)
+        for row in celllist:
+            for variable in row:
+                list_of_variables.append(self.excel_cell_to_variable(sheet,variable))
+
+        code = str(list_of_variables)
+        code = code.replace("'", "")
+        code = code.replace("[", "(")
+        code = code.replace("]", ")")
+        code = f"c{code}"
         return code, list_of_variables
 
 

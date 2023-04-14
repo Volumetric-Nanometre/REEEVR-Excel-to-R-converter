@@ -65,7 +65,7 @@ class TraverseTree:
                 sheet, coordinate = node.value.split('!')
 
             if ':' in node.value:
-                code,  variables = self.varconverter.excel_range_to_list(sheet, coordinate)
+                code,  variables = self.varconverter.excel_range(sheet, coordinate)
                 self.variables += variables
                 node.value = code
             else:
