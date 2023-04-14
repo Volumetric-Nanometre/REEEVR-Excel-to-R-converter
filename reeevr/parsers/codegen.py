@@ -75,7 +75,7 @@ class CodeGen:
 
         for output in self.outputs:
             if output in self.culledcode.keys():
-                print(f"print(f'{{{output}}}')")
+                print(f"print({output})")
             else:
                 raise KeyError("Request output does not exist")
 
@@ -83,8 +83,8 @@ if __name__ == "__main__":
 
     from reeevr.parsers.reader import ExcelReader
 
-    path = "C:/Users/mieha/Documents/REEVER/Test workbooks/test_workbook_3.xlsx"
-    a=ExcelReader(path,"Python")
+    path = "../../tests/test workbooks/test_workbook_3.xlsx"
+    a=ExcelReader(path,"R")
 
     a.read()
     outputs = ['Frontend_E8', 'Frontend_E9']
