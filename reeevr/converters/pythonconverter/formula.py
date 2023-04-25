@@ -13,7 +13,8 @@ class PythonTransform(TraverseTree):
         super().__init__(excelast, sheet, coordinate, varconverter)
         self.function_transformations = {"IF(": self.IF,
                                          "SUM(": self.SUM,
-                                         "AVERAGE(": self.AVERAGE}
+                                         "AVERAGE(": self.AVERAGE,
+                                         "SQRT(": self.SQRT}
 
     def IF(self, params):
 
@@ -52,6 +53,12 @@ class PythonTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"numpy.mean({''.join(simplesyntax)}"
 
+    def SQRT(self,params):
+        """
+        Return sqrt of value
+        """
+        simplesyntax = self.walk(params)
+        return f"numpy.sqrt({''.join(simplesyntax)}"
 
 if __name__ == "__main__":
 

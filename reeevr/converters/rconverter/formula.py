@@ -13,7 +13,8 @@ class RTransform(TraverseTree):
         super().__init__(excelast, sheet, coordinate,varconverter)
         self.function_transformations = {"IF(": self.IF,
                                          "SUM(": self.SUM,
-                                         "AVERAGE(": self.AVERAGE}
+                                         "AVERAGE(": self.AVERAGE,
+                                         "SQRT(": self.SQRT}
 
     def IF(self, params):
 
@@ -47,6 +48,13 @@ class RTransform(TraverseTree):
     def SUM(self, params):
         simplesyntax = self.walk(params)
         return f"sum({''.join(simplesyntax)}"
+
+    def SQRT(self,params):
+        """
+        Return sqrt of value
+        """
+        simplesyntax = self.walk(params)
+        return f"sqrt({''.join(simplesyntax)}"
 
     def AVERAGE(self, params):
         """
