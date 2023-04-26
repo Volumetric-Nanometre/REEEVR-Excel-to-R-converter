@@ -14,7 +14,11 @@ class RTransform(TraverseTree):
         self.function_transformations = {"IF(": self.IF,
                                          "SUM(": self.SUM,
                                          "AVERAGE(": self.AVERAGE,
-                                         "SQRT(": self.SQRT}
+                                         "SQRT(": self.SQRT,
+                                         "RAND(": self.RAND,
+                                         "_xlfn.BETA.INV(": self.BETAINV,
+                                         "_xlfn.NORM.INV(": self.NORMINV,
+                                         "_xlfn.STDEV.S(": self.STDEVSAMPLE}
 
     def IF(self, params):
 
@@ -62,6 +66,39 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"mean({''.join(simplesyntax)}"
+
+    def RAND(self,params):
+        """
+        Generates a random number with even distribution
+        of the form 0<=x<=1
+        """
+        simplesyntax = self.walk(params)
+        return f"runif(numberOfRuns{''.join(simplesyntax)}"
+
+    def BETAINV(self,params):
+        """
+        Return function to calculate the inverse of the beta cumulative probability density function
+        Must be of the form:
+        dinvbeta(x,α, ß, log=FALSE)
+        where x is the locatiin vector
+        """
+        simplesyntax = self.walk(params)
+        return f"qbeta({''.join(simplesyntax)}"
+
+    def NORMINV(self,params):
+        """
+        Returns the inverse of the normal cumulative distribution for the specified mean and standard deviation
+        """
+        simplesyntax = self.walk(params)
+        return f"qnorm({''.join(simplesyntax)}"
+
+    def STDEVSAMPLE(self,params):
+        """
+        Standard deviation of a sample
+        """
+        simplesyntax = self.walk(params)
+        return f"sd({''.join(simplesyntax)}"
+
 
 
 if __name__ == "__main__":
