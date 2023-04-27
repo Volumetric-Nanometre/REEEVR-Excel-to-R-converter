@@ -18,6 +18,24 @@ class CodeGen:
         self.dependantvars = outputs
 
 
+    def replace_averages(self):
+
+        for item in self.unorderedcode.items():
+
+            if 'average' in item[0]:
+                temp = item[0].replace('average_','')
+
+                for key in self.unorderedcode.keys():
+                    if (temp in key) and (key != item[0]):
+                        print(self.unorderedcode[item[0]])
+                        self.unorderedcode[item[0]]  = [f"mean({key})",[key],'n']
+                        print(self.unorderedcode[item[0]])
+
+
+
+
+
+
     def order_code_snippets(self):
         """
         Order the code snippets such that
@@ -55,6 +73,7 @@ class CodeGen:
         or used to generate the output.
 
         i.e prune the code tree of non-used code
+        {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]
         """
 
         for key in self.orderedcode.keys():
@@ -65,12 +84,15 @@ class CodeGen:
                 self.unusedcode[key] = self.orderedcode[key]
 
     def generate_code(self):
-
+        """
+        {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
+        """
         for item in self.culledcode.items():
 
             if item[1][2] != "f":
                 print(f"{item[0]} = {item[1][0]}")
             else:
+                item[1][0] = item[1][0].replace("%sep%", ",")
                 print(f"{item[1][0]}")
 
         for output in self.outputs:
