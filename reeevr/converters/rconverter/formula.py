@@ -16,9 +16,12 @@ class RTransform(TraverseTree):
                                          "AVERAGE(": self.AVERAGE,
                                          "SQRT(": self.SQRT,
                                          "RAND(": self.RAND,
+                                         "LN(": self.NATURALLOG,
+                                         "EXP(": self.EXP,
                                          "_xlfn.BETA.INV(": self.BETAINV,
                                          "_xlfn.NORM.INV(": self.NORMINV,
-                                         "_xlfn.STDEV.S(": self.STDEVSAMPLE}
+                                         "_xlfn.STDEV.S(": self.STDEVSAMPLE,
+                                         "_xlfn.CONCAT(": self.CONCAT}
 
     def IF(self, params):
 
@@ -60,6 +63,20 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"sqrt({''.join(simplesyntax)}"
 
+    def NATURALLOG(self, params):
+        """
+        Returns the natural log of the paramaters
+        """
+        simplesyntax = self.walk(params)
+        return f"log({''.join(simplesyntax)}"
+
+    def EXP(self, params):
+        """
+        Returns the exp() of the value
+        """
+        simplesyntax = self.walk(params)
+        return f"exp({''.join(simplesyntax)}"
+
     def AVERAGE(self, params):
         """
         Arithmetic mean
@@ -99,6 +116,13 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"sd({''.join(simplesyntax)}"
 
+    def CONCAT(self, params):
+        """
+        Return the concatination of the inputs
+        """
+
+        simplesyntax = self.walk(params)
+        return f"paste({''.join(simplesyntax)}"
 
 
 if __name__ == "__main__":
