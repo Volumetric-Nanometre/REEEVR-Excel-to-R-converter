@@ -19,9 +19,14 @@ class RTransform(TraverseTree):
                                          "LN(": self.NATURALLOG,
                                          "EXP(": self.EXP,
                                          "_xlfn.BETA.INV(": self.BETAINV,
+                                         "BETAINV(": self.BETAINV,
                                          "_xlfn.NORM.INV(": self.NORMINV,
                                          "_xlfn.STDEV.S(": self.STDEVSAMPLE,
-                                         "_xlfn.CONCAT(": self.CONCAT}
+                                         "_xlfn.CONCAT(": self.CONCAT,
+                                         "CHOOSE(": self.CHOOSE,
+                                         "COUNTA(": self.IGNORE,
+                                         "COUNTIF(": self.IGNORE,
+                                         "IFERROR(": self.IGNORE}
 
     def IF(self, params):
 
@@ -124,6 +129,16 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"paste({''.join(simplesyntax)}"
 
+    def CHOOSE(self,params):
+        "excelChoose <- function"
+        print("Need to substitute in the correct code")
+        simplesyntax = self.walk(params)
+        return f"excelChoose({''.join(simplesyntax)}"
+
+    def IGNORE(self,params):
+
+        simplesyntax = self.walk(params)
+        return f"IGNORED-WILL-NOT-WORK({''.join(simplesyntax)}"
 
 if __name__ == "__main__":
 
