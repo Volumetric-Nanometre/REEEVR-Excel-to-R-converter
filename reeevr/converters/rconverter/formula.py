@@ -23,6 +23,7 @@ class RTransform(TraverseTree):
                                          "_xlfn.NORM.INV(": self.NORMINV,
                                          "_xlfn.STDEV.S(": self.STDEVSAMPLE,
                                          "_xlfn.CONCAT(": self.CONCAT,
+                                         "GAMMAINV(": self.GAMMAINV,
                                          "CHOOSE(": self.CHOOSE,
                                          "COUNTA(": self.IGNORE,
                                          "COUNTIF(": self.IGNORE,
@@ -120,6 +121,13 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"sd({''.join(simplesyntax)}"
+
+    def GAMMAINV(self,params):
+        """
+        Inverse cumulative gamma distribution
+        """
+        simplesyntax = self.walk(params)
+        return f"qinvgamma({''.join(simplesyntax)}"
 
     def CONCAT(self, params):
         """
