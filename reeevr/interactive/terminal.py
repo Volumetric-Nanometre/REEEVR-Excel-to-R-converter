@@ -6,7 +6,7 @@ a = ExcelReader(path, "R")
 
 a.read()
 outputs = ['Frontend_E9', 'Frontend_E10']
-b = CodeGen(a.unorderedcode, outputs)
+b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
 
 b.replace_averages()
 b.order_code_snippets()

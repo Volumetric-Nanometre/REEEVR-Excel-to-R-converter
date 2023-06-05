@@ -9,13 +9,14 @@ class CodeGen:
     4. outputs final code file
     """
 
-    def __init__(self, unorderedcode, outputs):
+    def __init__(self, unorderedcode, outputs,codefile):
         self.unorderedcode = unorderedcode
         self.orderedcode = {}
         self.culledcode = {}
         self.unusedcode = {}
         self.outputs = outputs
         self.dependantvars = outputs
+        self.codefile = codefile
 
 
     def replace_averages(self):
@@ -87,19 +88,21 @@ class CodeGen:
         """
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
         """
-        for item in self.culledcode.items():
+        with open(self.codefile,"w") as f:
 
-            if item[1][2] != "f":
-                print(f"{item[0]} = {item[1][0]}")
-            else:
-                item[1][0] = item[1][0].replace("%sep%", ",")
-                print(f"{item[1][0]}")
+            for item in self.culledcode.items():
 
-        for output in self.outputs:
-            if output in self.culledcode.keys():
-                print(f"print({output})")
-            else:
-                raise KeyError("Request output does not exist")
+                if item[1][2] != "f":
+                    f.write(f"{item[0]} = {item[1][0]}\n")
+                else:
+                    item[1][0] = item[1][0].replace("%sep%", ",")
+                    f.write(f"{item[1][0]}\n")
+
+            for output in self.outputs:
+                if output in self.culledcode.keys():
+                    f.write(f"print({output})\n")
+                else:
+                    raise KeyError("Request output does not exist")
 
 if __name__ == "__main__":
 
@@ -110,7 +113,7 @@ if __name__ == "__main__":
 
     a.read()
     outputs = ['Frontend_E8', 'Frontend_E9']
-    b = CodeGen(a.unorderedcode, outputs)
+    b = CodeGen(a.unorderedcode, outputs, codefile=test_output.R)
 
     b.order_code_snippets()
     b.cull_code_snippets()
