@@ -27,7 +27,7 @@ class RTransform(TraverseTree):
                                          "CHOOSE(": self.CHOOSE,
                                          "COUNTA(": self.IGNORE,
                                          "COUNTIF(": self.IGNORE,
-                                         "IFERROR(": self.IGNORE}
+                                         "IFERROR(": self.IFERROR}
 
     def IF(self, params):
 
@@ -142,6 +142,14 @@ class RTransform(TraverseTree):
         print("CHOOSE - Need to substitute in the correct code")
         simplesyntax = self.walk(params)
         return f"excelChoose({''.join(simplesyntax)}"
+
+    def IFERROR(self,params):
+        simplesyntax = self.walk(params)
+
+        code = ''.join(simplesyntax)
+        code = code.split("%sep%")[0]
+
+        return f"{code}"
 
     def IGNORE(self,params):
 
