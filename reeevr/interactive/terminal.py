@@ -1,12 +1,13 @@
 from reeevr.parsers.reader import ExcelReader
 from reeevr.parsers.codegen import CodeGen
 
-path = "../../tests/test workbooks/test_workbook_4.xlsm"
-a = ExcelReader(path, "R")
+path = "../../tests/test workbooks/Two states Markov model_v0.1_18May2023.xlsm"
+
+outputs = [('Results', 'G13:L13')]
+a = ExcelReader(path,outputs, "R")
 
 a.read()
-outputs = ['Frontend_E9', 'Frontend_E10']
-b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
+b = CodeGen(a.unorderedcode, a.outputcells, codefile="test_output.R")
 
 b.replace_averages()
 b.order_code_snippets()

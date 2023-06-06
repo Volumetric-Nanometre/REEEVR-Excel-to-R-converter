@@ -10,7 +10,7 @@ class ExcelReader:
     dictionary.
     """
 
-    def __init__(self,workbookpath,outputlang):
+    def __init__(self,workbookpath,outputs,outputlang):
         self.supportedlanguages = {'python': PythonTransform, 'r' : RTransform}
 
         self.workbookpath = workbookpath
@@ -20,7 +20,24 @@ class ExcelReader:
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
         self.varconverter = VariableConverter(self.workbook,self.outputlang)
+        self.outputcells = self.expand_outputs(outputs)
 
+
+    def expand_outputs(self,outputs):
+
+        expandedOutputs = []
+        for output in outputs:
+            sheet = output[0]
+            range = output[1]
+
+            if ":" in range:
+                code, vars = self.varconverter.excel_range_to_r_vector(sheet,range)
+                expandedOutputs += vars
+            else:
+                varname = self.varconverter.excel_cell_to_variable(sheet, range)
+                expandedOutputs.append(varname)
+
+        return expandedOutputs
 
     def language_select(self):
 
