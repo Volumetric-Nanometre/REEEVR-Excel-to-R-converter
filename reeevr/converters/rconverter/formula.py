@@ -141,7 +141,7 @@ class RTransform(TraverseTree):
         "excelChoose <- function"
         print("CHOOSE - Need to substitute in the correct code")
         simplesyntax = self.walk(params)
-        return f"excelChoose({''.join(simplesyntax)}"
+        return f"excel_choose({''.join(simplesyntax)}"
 
     def IFERROR(self,params):
         simplesyntax = self.walk(params)
@@ -154,7 +154,7 @@ class RTransform(TraverseTree):
     def IGNORE(self,params):
 
         simplesyntax = self.walk(params)
-        return f"IGNORED({''.join(simplesyntax)}"
+        return f"excel_ignore({''.join(simplesyntax)}"
 
 if __name__ == "__main__":
 
