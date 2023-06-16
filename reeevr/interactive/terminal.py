@@ -1,13 +1,25 @@
 from reeevr.parsers.reader import ExcelReader
 from reeevr.parsers.codegen import CodeGen
+from reeevr.parsers.outputs import ROutputs
+from reeevr.converters.variable import VariableConverter
+import openpyxl
 
-path = "../../tests/test workbooks/Two states Markov model_v0.1_18May2023.xlsm"
+path = "../../tests/test workbooks/test_workbook_4.xlsm"
+outputLang = "R"
 
-outputs = [('Results', 'G13:L13')]
-a = ExcelReader(path,outputs, "R")
+workbook = openpyxl.load_workbook(path)
+
+
+testOutput = [('Engine', 'E5:G7')]
+
+varconverter = VariableConverter(workbook,outputLang)
+
+outputs = ROutputs(varconverter,"","",testOutput)
+
+a = ExcelReader(varconverter,workbook, outputLang)
 
 a.read()
-b = CodeGen(a.unorderedcode, a.outputcells, codefile="test_output.R")
+b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
 
 b.order_code_snippets()
 b.cull_code_snippets()

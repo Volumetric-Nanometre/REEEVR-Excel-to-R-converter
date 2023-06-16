@@ -1,4 +1,3 @@
-import openpyxl
 from openpyxl.formula import Tokenizer
 from reeevr.converters.variable import VariableConverter
 from reeevr.parsers.excelast import ExcelAST
@@ -10,25 +9,14 @@ class ExcelReader:
     dictionary.
     """
 
-    def __init__(self,workbookpath,outputs,outputlang):
+    def __init__(self,varconverter,workbook,outputlang):
         self.supportedlanguages = {'python': PythonTransform, 'r' : RTransform}
-
-        self.workbookpath = workbookpath
-        self.workbook = openpyxl.load_workbook(self.workbookpath)
+        self.workbook = workbook
         self.unorderedcode = {}
         self.ignoredsheets = ['DSA', 'PSA']
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
-        self.varconverter = VariableConverter(self.workbook,self.outputlang)
-        self.outputcells = self.expand_outputs(outputs)
-
-
-    def expand_outputs(self,outputs):
-
-        expandedOutputs = []
-        for output in outputs:
-            sheet = output[0]
-            range = output[1]
+        self.varconverter = varconverter #VariableConverter(workbook,self.outputlang)
 
 
     def language_select(self):
