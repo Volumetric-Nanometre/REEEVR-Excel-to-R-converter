@@ -139,7 +139,6 @@ class RTransform(TraverseTree):
 
     def CHOOSE(self,params):
         "excelChoose <- function"
-        print("CHOOSE - Need to substitute in the correct code")
         simplesyntax = self.walk(params)
         return f"excel_choose({''.join(simplesyntax)}"
 
