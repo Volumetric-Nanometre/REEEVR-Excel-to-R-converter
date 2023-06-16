@@ -5,13 +5,13 @@
 #' @return dataframe containing all inputs
 #'
 #' @examples
-#' dataframe <- BCEA_dataframe(6, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+#' dataframe <- BCEA_dataframe(a=c(1,2,3),b=c(4,5,6))
 #'
 #' @export
 
 BCEA_dataframe <- function(...) {
 
-  outputs <- list(...)
+  df <- data.frame(...)
 
+  return(df)
 }
-
