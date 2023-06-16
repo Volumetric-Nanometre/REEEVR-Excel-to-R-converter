@@ -8,7 +8,7 @@ class VariableConverter:
 
     def __init__(self,workbook,language):
         self.definednames = {}
-        self.language = language
+        self.language = language.lower()
         self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_vector}
         self.get_defined_names(workbook)
 
