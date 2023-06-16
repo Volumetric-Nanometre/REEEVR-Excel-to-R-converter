@@ -9,7 +9,6 @@ a = ExcelReader(path,outputs, "R")
 a.read()
 b = CodeGen(a.unorderedcode, a.outputcells, codefile="test_output.R")
 
-b.replace_averages()
 b.order_code_snippets()
 b.cull_code_snippets()
 b.generate_code()

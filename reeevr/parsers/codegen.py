@@ -19,24 +19,6 @@ class CodeGen:
         self.codefile = codefile
 
 
-    def replace_averages(self):
-
-        for item in self.unorderedcode.items():
-
-            if 'average' in item[0]:
-                temp = item[0].replace('average_','')
-
-                for key in self.unorderedcode.keys():
-                    if (temp in key) and (key != item[0]):
-                        print(self.unorderedcode[item[0]])
-                        self.unorderedcode[item[0]]  = [f"mean({key})",[key],'n']
-                        print(self.unorderedcode[item[0]])
-
-
-
-
-
-
     def order_code_snippets(self):
         """
         Order the code snippets such that
