@@ -91,7 +91,7 @@ if __name__ == "__main__":
 
     a.read()
     outputs = ['Frontend_E8', 'Frontend_E9']
-    b = CodeGen(a.unorderedcode, outputs, codefile=test_output.R)
+    b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
 
     b.order_code_snippets()
     b.cull_code_snippets()
