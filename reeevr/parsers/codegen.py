@@ -18,6 +18,10 @@ class CodeGen:
         self.dependantvars = outputs.output_cells()
         self.codefile = codefile
 
+        self.mandatoryCode = "library(reeevr)\n" \
+                             "library(BCEA)\n" \
+                             "numberOfRuns = 1000\n"
+
 
     def order_code_snippets(self):
         """
@@ -71,6 +75,7 @@ class CodeGen:
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
         """
         with open(self.codefile,"w") as f:
+            f.write(f"{self.mandatoryCode}")
 
             for item in self.culledcode.items():
 
