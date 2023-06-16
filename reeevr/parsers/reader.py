@@ -30,14 +30,6 @@ class ExcelReader:
             sheet = output[0]
             range = output[1]
 
-            if ":" in range:
-                code, vars = self.varconverter.excel_range_to_r_vector(sheet,range)
-                expandedOutputs += vars
-            else:
-                varname = self.varconverter.excel_cell_to_variable(sheet, range)
-                expandedOutputs.append(varname)
-
-        return expandedOutputs
 
     def language_select(self):
 
