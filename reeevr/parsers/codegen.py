@@ -15,7 +15,7 @@ class CodeGen:
         self.culledcode = {}
         self.unusedcode = {}
         self.outputs = outputs
-        self.dependantvars = outputs
+        self.dependantvars = outputs.output_cells()
         self.codefile = codefile
 
 
@@ -80,11 +80,7 @@ class CodeGen:
                     item[1][0] = item[1][0].replace("%sep%", ",")
                     f.write(f"{item[1][0]}\n")
 
-            for output in self.outputs:
-                if output in self.culledcode.keys():
-                    f.write(f"print({output})\n")
-                else:
-                    raise KeyError("Request output does not exist")
+            f.write(f"{self.outputs.add_output_code()}")
 
 if __name__ == "__main__":
 
