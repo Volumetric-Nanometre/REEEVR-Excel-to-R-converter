@@ -144,11 +144,7 @@ class RTransform(TraverseTree):
 
     def IFERROR(self,params):
         simplesyntax = self.walk(params)
-
-        code = ''.join(simplesyntax)
-        code = code.split("%sep%")[0]
-
-        return f"{code}"
+        return f"excel_iferror({''.join(simplesyntax)}"
 
     def IGNORE(self,params):
 
