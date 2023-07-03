@@ -60,6 +60,9 @@ class ExcelAST:
             elif token.type == 'OPERATOR-INFIX':
                 self.count += 1
                 nodelist.append(ParseNode("InfixOperator", token.value))
+            elif token.type == 'OPERATOR-PREFIX':
+                self.count += 1
+                nodelist.append(ParseNode("PrefixOperator", token.value))
             elif token.type == 'FUNC' and token.subtype == 'OPEN':
                 self.count += 1
                 nodelist.append(ExpressionNode("FunctionCall", token.value, self._walk()))
