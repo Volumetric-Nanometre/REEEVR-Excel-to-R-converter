@@ -70,6 +70,7 @@ class CodeGen:
             else:
                 self.unusedcode[key] = self.orderedcode[key]
 
+        self.none_strip()
     def generate_code(self):
         """
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
@@ -86,6 +87,17 @@ class CodeGen:
                     f.write(f"{item[1][0]}\n")
 
             f.write(f"{self.outputs.add_output_code()}")
+
+    def none_strip(self):
+        """
+        replace all none types with NA
+        """
+        for item in self.culledcode.items():
+            print(item)
+            if item[1][0] is None:
+                temp = item[1]
+                temp[0] = 'NA'
+                self.culledcode[item[0]] = temp
 
 if __name__ == "__main__":
 
