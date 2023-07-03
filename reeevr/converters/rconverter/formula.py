@@ -60,7 +60,7 @@ class RTransform(TraverseTree):
 
     def SUM(self, params):
         simplesyntax = self.walk(params)
-        return f"sum({''.join(simplesyntax)}"
+        return f"excel_sum_select({''.join(simplesyntax)}"
 
     def SQRT(self,params):
         """

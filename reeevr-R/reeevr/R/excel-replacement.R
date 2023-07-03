@@ -77,3 +77,25 @@ excel_gammainv <- function(x, alpha, beta) {
 
   return(qgamma(x,shape=alpha,scale=beta))
 }
+
+#' Select which SUM should be used
+#'
+#' Select the correct SUM type based on inputs.
+#' If the inputs are a singular list, then call sum()
+#' If inputs are a list of lists, call Reduce('+',list())
+#' @param ... list of inputs
+#' @return either sum(c(...)) or Reduce('+',list(...))
+#'
+#' @examples
+#' sumvals <- excel_sum_select(list(1,0,1))
+#' sumvals <- excel_sum_select(list(c(1,0,1),c(1,0,1),c(1,0,1)))
+#' @export
+excel_sum_select <- function(...) {
+  vars = list(...)
+  for(val in vars)
+    if(length(val)>1)
+      return (Reduce('+',...))
+
+  return(sum(...))
+}
+
