@@ -2,7 +2,7 @@
 
 class ROutputs:
 
-    def __init__(self,converter,print,file,df,costs,effs,treatments):
+    def __init__(self,converter,print,file,df,costs,effs,treatments,willingnesstopay):
 
         self.varconverter = converter
         self.printOutputs = self.expand_outputs(print)
@@ -11,6 +11,7 @@ class ROutputs:
         self.costs = self.expand_outputs(costs)
         self.effectiveness = self.expand_outputs(effs)
         self.treatments = treatments
+        self.willingnesstopay = self.expand_outputs(willingnesstopay)
 
     def expand_outputs(self,outputs):
 
@@ -86,14 +87,13 @@ class ROutputs:
             costs = ",".join(self.costs)
             effs = ",".join(self.effectiveness)
             treatments = ",".join([f'"{val}"' for val in self.treatments])
-            print(treatments)
             treatments = f'c({treatments})\n'
 
             bcea_code = ""
             bcea_code += f"costs = BCEA_matrix({costs})\n"
             bcea_code += f"effs = BCEA_matrix({effs})\n"
             bcea_code += f"treatments = {treatments}\n"
-            bcea_code += f"BCEA_all_output_loop(costs,effs,treatments,100)\n"
+            bcea_code += f"BCEA_all_output_loop(costs,effs,treatments,{self.willingnesstopay[0]})\n"
 
         return bcea_code
 

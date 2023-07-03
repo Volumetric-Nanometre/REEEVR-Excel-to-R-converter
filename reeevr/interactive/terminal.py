@@ -14,9 +14,10 @@ testOutput = [('Results', 'F13:H13'), ('Results', 'F12:H12')]  # [('Summary resu
 costs = [('Results', 'F12'), ('Results', 'F13')]
 effs = [('Results', 'G12'), ('Results', 'G13')]
 treatmentNames = ['Drug A', 'Drug B']
+willingnessToPay = [('Model settings','N13')]
 varconverter = VariableConverter(workbook, outputLang)
 
-outputs = ROutputs(varconverter, "", "", testOutput, costs, effs,treatmentNames)
+outputs = ROutputs(varconverter, "", "", testOutput, costs, effs,treatmentNames,willingnessToPay)
 
 a = ExcelReader(varconverter, workbook, outputLang)
 
