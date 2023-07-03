@@ -39,3 +39,41 @@ excel_ignore <- function(...) {
 
   return(NA)
 }
+
+#' Excel IFERROR function
+#'
+#' Check if value is blank and return non-blank value.
+#' @param value expected non-blank value
+#' @param value_if_error value to return if blank
+#' @return return non-blank value
+#'
+#' @examples
+#' num <- excel_iferror(6)
+#' blank <- excel_iferror(NA)
+#'
+#' @export
+
+excel_iferror <- function(value, value_if_error) {
+
+  returnVar = value
+  if(is.blank(value))
+    returnVar = value_if_error
+  return(returnVar)
+}
+
+#' Excel GAMMAINV function
+#'
+#' return corret qgamma distribution
+#' @param x list of random numbers
+#' @param alpha
+#' @param beta
+#' @return qgamma output
+#'
+#' @examples
+#' gaminv <- excel_gammainv(0.2,100,6)
+#'
+#' @export
+excel_gammainv <- function(x, alpha, beta) {
+
+  return(qgamma(x,shape=alpha,scale=beta))
+}
