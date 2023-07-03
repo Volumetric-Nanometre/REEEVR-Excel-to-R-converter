@@ -13,9 +13,10 @@ workbook = openpyxl.load_workbook(path)
 testOutput = [('Results', 'F13:H13'), ('Results', 'F12:H12')]  # [('Summary results', 'F6:G9')] #
 costs = [('Results', 'F12'), ('Results', 'F13')]
 effs = [('Results', 'G12'), ('Results', 'G13')]
+treatmentNames = ['Drug A', 'Drug B']
 varconverter = VariableConverter(workbook, outputLang)
 
-outputs = ROutputs(varconverter, "", "", testOutput, costs, effs)
+outputs = ROutputs(varconverter, "", "", testOutput, costs, effs,treatmentNames)
 
 a = ExcelReader(varconverter, workbook, outputLang)
 
