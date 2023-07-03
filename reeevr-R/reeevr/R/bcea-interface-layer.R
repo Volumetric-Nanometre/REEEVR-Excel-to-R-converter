@@ -65,8 +65,12 @@ BCEA_all_output_loop <- function(costs,effectiveness,treatments,Kmax) {
       dir.create(outfolder)
 
     bcea_output <- bcea(effectiveness,costs, ref = ref,interventions = treatments, Kmax = Kmax)
-    png(file.path(outfolder,"plots.png"))
-    plot(bcea_output)
+    png(file.path(outfolder,"ce-plane-plot.png"))
+    ceplane.plot(bcea_output)
+    dev.off()
+    png(file.path(outfolder,"multi-plot.png"))
+    multice = multi.ce(bcea_output)
+    ceac.plot(multice)
     dev.off()
 
   }
