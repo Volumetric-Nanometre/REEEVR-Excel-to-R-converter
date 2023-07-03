@@ -125,7 +125,7 @@ class VariableConverter:
         code = code.replace("'", "")
         code = code.replace("[", "(")
         code = code.replace("]", ")")
-        code = f"c{code}"
+        code = f"list{code}"
         return code, list_of_variables
 
 
