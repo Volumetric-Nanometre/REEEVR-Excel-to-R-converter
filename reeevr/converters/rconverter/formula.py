@@ -127,7 +127,7 @@ class RTransform(TraverseTree):
         Inverse cumulative gamma distribution
         """
         simplesyntax = self.walk(params)
-        return f"qinvgamma({''.join(simplesyntax)}"
+        return f"excel_gammainv({''.join(simplesyntax)}"
 
     def CONCAT(self, params):
         """
