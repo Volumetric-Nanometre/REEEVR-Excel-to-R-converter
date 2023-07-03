@@ -4,19 +4,20 @@ from reeevr.parsers.outputs import ROutputs
 from reeevr.converters.variable import VariableConverter
 import openpyxl
 
-path = "../../tests/test workbooks/test_workbook_4.xlsm"
+path = "../../tests/test workbooks/Two states Markov model_v0.2_03Jul2023_PSA.xlsm"
 outputLang = "R"
 
 workbook = openpyxl.load_workbook(path)
 
 
-testOutput = [('Engine', 'E5:G7')]
+testOutput = [('Results', 'F13:H13'), ('Results', 'F12:H12')]  # [('Summary results', 'F6:G9')] #
+costs = [('Results', 'F12'), ('Results', 'F13')]
+effs = [('Results', 'G12'), ('Results', 'G13')]
+varconverter = VariableConverter(workbook, outputLang)
 
-varconverter = VariableConverter(workbook,outputLang)
+outputs = ROutputs(varconverter, "", "", testOutput, costs, effs)
 
-outputs = ROutputs(varconverter,"","",testOutput)
-
-a = ExcelReader(varconverter,workbook, outputLang)
+a = ExcelReader(varconverter, workbook, outputLang)
 
 a.read()
 b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")

@@ -2,13 +2,14 @@
 
 class ROutputs:
 
-    def __init__(self,converter,print,file,df):
+    def __init__(self,converter,print,file,df,costs,effs):
 
         self.varconverter = converter
         self.printOutputs = self.expand_outputs(print)
         self.fileOutputs = self.expand_outputs(file)
         self.dataframeOutputs = self.expand_outputs(df)
-
+        self.costs = self.expand_outputs(costs)
+        self.effectiveness = self.expand_outputs(effs)
 
     def expand_outputs(self,outputs):
 
@@ -37,6 +38,8 @@ class ROutputs:
         fullOutputCode += self.create_dataframe()
         fullOutputCode += self.file_output()
         fullOutputCode += self.print_output()
+        fullOutputCode += self.bcea()
+
 
         return fullOutputCode
     def print_output(self):
@@ -69,6 +72,29 @@ class ROutputs:
 
 
         return dataframe_code
+
+    def bcea(self):
+        """
+        Use the R BCEA_dataframe function to generate a dataframe
+        """
+        bcea_code = ""
+
+        if self.costs and self.effectiveness:
+
+
+            costs = ",".join(self.costs)
+            effs = ",".join(self.effectiveness)
+            treatments = ",".join([f'"{val}"' for val in self.costs])
+            print(treatments)
+            treatments = f'c({treatments})\n'
+
+            bcea_code = ""
+            bcea_code += f"costs = BCEA_matrix({costs})\n"
+            bcea_code += f"effs = BCEA_matrix({effs})\n"
+            bcea_code += f"treatments = {treatments}\n"
+            bcea_code += f"BCEA_all_output_loop(costs,effs,treatments,100)\n"
+
+        return bcea_code
 
 
 if __name__ == "__main__":
