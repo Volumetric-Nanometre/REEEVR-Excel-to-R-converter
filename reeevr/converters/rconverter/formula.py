@@ -88,7 +88,7 @@ class RTransform(TraverseTree):
         Arithmetic mean
         """
         simplesyntax = self.walk(params)
-        return f"mean({''.join(simplesyntax)}"
+        return f"mean(unlist({''.join(simplesyntax)})"
 
     def RAND(self,params):
         """
@@ -120,7 +120,7 @@ class RTransform(TraverseTree):
         Standard deviation of a sample
         """
         simplesyntax = self.walk(params)
-        return f"sd({''.join(simplesyntax)}"
+        return f"sd(unlist({''.join(simplesyntax)})"
 
     def GAMMAINV(self,params):
         """
