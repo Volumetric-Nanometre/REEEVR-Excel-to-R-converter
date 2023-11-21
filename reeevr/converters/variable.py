@@ -27,6 +27,7 @@ class VariableConverter:
         else:
             sheetname = str(sheet).strip()
             sheetname = sheetname.replace(" ", "")
+            sheetname = sheetname.replace("-", "")
             coordinate = coordinate.replace("$", "")
             varname = f'{sheetname}_{coordinate}'
             varname = varname.replace("'","")
@@ -35,7 +36,7 @@ class VariableConverter:
 
     def get_defined_names(self,workbook):
         """
-        Aquire all global defined names
+        Acquire all global defined names
         for comparison and replacement purposes
         """
         try:
