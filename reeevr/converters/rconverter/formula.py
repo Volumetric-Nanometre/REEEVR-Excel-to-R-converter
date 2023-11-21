@@ -1,4 +1,4 @@
-from reeevr.parsers.traverse import TraverseTree
+from parsers.traverse import TraverseTree
 
 
 class RTransform(TraverseTree):
@@ -11,23 +11,76 @@ class RTransform(TraverseTree):
     def __init__(self,  excelast, sheet, coordinate,varconverter):
 
         super().__init__(excelast, sheet, coordinate,varconverter)
-        self.function_transformations = {"IF(": self.IF,
-                                         "SUM(": self.SUM,
-                                         "AVERAGE(": self.AVERAGE,
-                                         "SQRT(": self.SQRT,
-                                         "RAND(": self.RAND,
-                                         "LN(": self.NATURALLOG,
-                                         "EXP(": self.EXP,
-                                         "_xlfn.BETA.INV(": self.BETAINV,
-                                         "BETAINV(": self.BETAINV,
-                                         "_xlfn.NORM.INV(": self.NORMINV,
-                                         "_xlfn.STDEV.S(": self.STDEVSAMPLE,
-                                         "_xlfn.CONCAT(": self.CONCAT,
-                                         "GAMMAINV(": self.GAMMAINV,
-                                         "CHOOSE(": self.CHOOSE,
-                                         "COUNTA(": self.IGNORE,
-                                         "COUNTIF(": self.IGNORE,
-                                         "IFERROR(": self.IFERROR}
+
+        self.simple_transform = [ "SQRT(",
+                                  "EXP(",
+                                  "ABS(",
+                                  "MAX(",
+                                  "MIN(",
+                                ]
+
+        self.adaptive_transform = { "AVERAGE(": self.AVERAGE,
+                                    "RAND(": self.RAND,
+                                    "LN(": self.NATURALLOG,
+                                    "_xlfn.BETA.INV(": self.BETAINV,
+                                    "BETAINV(": self.BETAINV,
+                                    "_xlfn.NORM.INV(": self.NORMINV,
+                                    "_xlfn.STDEV.S(": self.STDEVSAMPLE,
+                                    "_xlfn.CONCAT(": self.CONCAT,
+                                    "IF(" : self.IF,
+                                  }
+
+        self.reeevr_transform = [ "SUM(",
+                                  "INDEX(",
+                                  "CHOOSE(",
+                                  "COUNTA(",
+                                  "COUNTIF(",
+                                  "IFERROR(",
+                                  "GAMMAINV(",
+                                  "AND(",
+                                  "_xlfn.IFS("
+                                ]
+
+
+    def formula_converter(self,input,params):
+
+        if input in self.simple_transform:
+            return self.simple_convert(input,params)
+
+        elif input in self.reeevr_transform:
+            return self.reeevr_convert(input,params)
+
+        elif input in self.adaptive_transform.keys():
+            return self.adaptive_transform[input](params)
+        else:
+            simplesyntax = self.walk(params)
+            with open("missing-func.log", "a+") as f:
+                f.write(f"{input} - {simplesyntax}\n")
+            return f"UNKNOWN_FUNCTION_SEE_LOG_FILE({''.join(simplesyntax)}"
+        """
+        #elif ":OFFSET(" in input :
+
+
+            cellrange = input.split(':')
+            print(cellrange)
+
+            simplesyntax = self.walk(params)
+
+
+            def calcOffset(simplesyntax):
+
+                startcell = simplesyntax[0]
+                print(startcell)
+
+            calcOffset(simplesyntax)
+
+            with open("missing-func.log", "a+") as f:
+                f.write(f"{input} - {simplesyntax}\n")
+            return f"OFFSET({''.join(simplesyntax)}"
+            
+        """
+
+
 
     def IF(self, params):
 
@@ -57,17 +110,21 @@ class RTransform(TraverseTree):
         self.code += code
 
         return f'{expressionname}()'
-
-    def SUM(self, params):
-        simplesyntax = self.walk(params)
-        return f"excel_sum_select({''.join(simplesyntax)}"
-
-    def SQRT(self,params):
+    def simple_convert(self,input,params):
         """
-        Return sqrt of value
+        Performs a simple conversion by lowering the function,
+        thus returning the correct output without additional work
         """
         simplesyntax = self.walk(params)
-        return f"sqrt({''.join(simplesyntax)}"
+        return f"{input.lower()}{''.join(simplesyntax)}"
+
+    def reeevr_convert(self,input,params):
+        """
+        Palms off the conversion to the reeevr R package
+        thus returning the correct output with external work
+        """
+        simplesyntax = self.walk(params)
+        return f"excel_{input.lower()}{''.join(simplesyntax)}"
 
     def NATURALLOG(self, params):
         """
@@ -75,13 +132,6 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"log({''.join(simplesyntax)}"
-
-    def EXP(self, params):
-        """
-        Returns the exp() of the value
-        """
-        simplesyntax = self.walk(params)
-        return f"exp({''.join(simplesyntax)}"
 
     def AVERAGE(self, params):
         """
@@ -122,13 +172,6 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"sd(unlist({''.join(simplesyntax)})"
 
-    def GAMMAINV(self,params):
-        """
-        Inverse cumulative gamma distribution
-        """
-        simplesyntax = self.walk(params)
-        return f"excel_gammainv({''.join(simplesyntax)}"
-
     def CONCAT(self, params):
         """
         Return the concatination of the inputs
@@ -137,24 +180,10 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"paste({''.join(simplesyntax)}"
 
-    def CHOOSE(self,params):
-        "excelChoose <- function"
-        simplesyntax = self.walk(params)
-        return f"excel_choose({''.join(simplesyntax)}"
-
-    def IFERROR(self,params):
-        simplesyntax = self.walk(params)
-        return f"excel_iferror({''.join(simplesyntax)}"
-
-    def IGNORE(self,params):
-
-        simplesyntax = self.walk(params)
-        return f"excel_ignore({''.join(simplesyntax)}"
-
 if __name__ == "__main__":
 
     from openpyxl.formula import Tokenizer
-    from reeevr.parsers.excelast import ExcelAST
+    from parsers.excelast import ExcelAST
     tokenlist = Tokenizer('= 1 + IF(IF(sheet10!A1 = "yes", AVERAGE(A10:A20), 23), SUM(B10:V20),50) + '
                           'IF(IF(OMG!A1 = "yes", SUM(A10:A20), 70),"shit",\'My stuff\'!A1) +20 + SUM(A10:A20)')
 
