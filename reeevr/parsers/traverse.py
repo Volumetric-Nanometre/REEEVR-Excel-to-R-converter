@@ -1,5 +1,5 @@
-import reeevr.parsers.excelast as excelast
-from reeevr.converters.variable import VariableConverter
+import parsers.excelast as excelast
+from converters.variable import VariableConverter
 
 
 class TraverseTree:

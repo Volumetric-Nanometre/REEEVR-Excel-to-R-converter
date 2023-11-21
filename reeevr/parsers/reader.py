@@ -1,8 +1,8 @@
 from openpyxl.formula import Tokenizer
-from reeevr.converters.variable import VariableConverter
-from reeevr.parsers.excelast import ExcelAST
-from reeevr.converters.pythonconverter.formula import PythonTransform
-from reeevr.converters.rconverter.formula import RTransform
+from converters.variable import VariableConverter
+from parsers.excelast import ExcelAST
+from converters.pythonconverter.formula import PythonTransform
+from converters.rconverter.formula import RTransform
 class ExcelReader:
     """
     Read the Excel workbook into an unordered

@@ -94,7 +94,6 @@ class CodeGen:
         replace all none types with NA
         """
         for item in self.culledcode.items():
-            print(item)
             if item[1][0] is None:
                 temp = item[1]
                 temp[0] = 'NA'
@@ -102,7 +101,7 @@ class CodeGen:
 
 if __name__ == "__main__":
 
-    from reeevr.parsers.reader import ExcelReader
+    from parsers.reader import ExcelReader
 
     path = "../../tests/test workbooks/test_workbook_3.xlsx"
     a=ExcelReader(path,"R")

@@ -1,7 +1,7 @@
-from reeevr.parsers.reader import ExcelReader
-from reeevr.parsers.codegen import CodeGen
-from reeevr.parsers.outputs import ROutputs
-from reeevr.converters.variable import VariableConverter
+from parsers.reader import ExcelReader
+from parsers.codegen import CodeGen
+from parsers.outputs import ROutputs
+from converters.variable import VariableConverter
 import openpyxl
 
 path = "../../tests/test workbooks/Two states Markov model_v0.2_03Jul2023_PSA.xlsm"
