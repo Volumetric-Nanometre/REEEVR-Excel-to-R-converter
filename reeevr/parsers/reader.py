@@ -1,7 +1,6 @@
 from openpyxl.formula import Tokenizer
-from converters.variable import VariableConverter
 from parsers.excelast import ExcelAST
-from converters.rconverter.formula import RTransform
+from converters.formula import RTransform
 class ExcelReader:
     """
     Read the Excel workbook into an unordered
