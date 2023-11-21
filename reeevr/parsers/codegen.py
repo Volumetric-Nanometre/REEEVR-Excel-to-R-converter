@@ -50,9 +50,10 @@ class CodeGen:
 
         if count == 100:
 
-            errorstring = ", ".join([f'{item[0]} : {item[1][1]}' for item in remainingcode.items()])
-
-            raise KeyError(f"Code cannot be ordered as the following variables are missing their corresponding dependancies: {errorstring}")
+            errorstring = "".join([f'{item[0]} : {item[1][1]}\n' for item in remainingcode.items()])
+            with open("missing-cells.txt","w") as f:
+                f.write(errorstring)
+            #raise KeyError(f"Code cannot be ordered as variables are missing their corresponding dependancies. See missing-cells.txt")
 
     def cull_code_snippets(self):
         """
