@@ -9,11 +9,11 @@ class ExcelReader:
     dictionary.
     """
 
-    def __init__(self,varconverter,workbook,outputlang):
+    def __init__(self,varconverter,workbook,outputlang,ignoredsheets):
         self.supportedlanguages = {'python': PythonTransform, 'r' : RTransform}
         self.workbook = workbook
         self.unorderedcode = {}
-        self.ignoredsheets = ['DSA', 'PSA']
+        self.ignoredsheets = ignoredsheets #  ['DSA', 'PSA', 'PSA results', 'DSA results']
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
         self.varconverter = varconverter #VariableConverter(workbook,self.outputlang)
