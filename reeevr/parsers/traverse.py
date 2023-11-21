@@ -13,8 +13,17 @@ class TraverseTree:
         self.outputvarname = self.varconverter.excel_cell_to_variable(sheet, coordinate)
         self.count = 0
         self.code = ""
-        self.function_transformations = {}
         self.variables = []
+
+
+    def formula_converter(self,input,params):
+        """
+        To be overloaded
+        :param input:
+        :param params:
+        :return:
+        """
+        raise SystemError("If this appears, converter has not successfully overloaded")
 
     def walk(self, tree):
 
@@ -46,7 +55,8 @@ class TraverseTree:
         """
 
         try:
-            return self.function_transformations[node.name](node.params)
+            return self.formula_converter(node.name, node.params)
+            #return self.function_transformations[node.name](node.params)
         except KeyError:
             raise KeyError("Function not in transform list")
 
