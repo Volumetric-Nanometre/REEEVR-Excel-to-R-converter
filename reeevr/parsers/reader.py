@@ -1,7 +1,6 @@
 from openpyxl.formula import Tokenizer
 from converters.variable import VariableConverter
 from parsers.excelast import ExcelAST
-from converters.pythonconverter.formula import PythonTransform
 from converters.rconverter.formula import RTransform
 class ExcelReader:
     """
@@ -10,7 +9,7 @@ class ExcelReader:
     """
 
     def __init__(self,varconverter,workbook,outputlang,ignoredsheets):
-        self.supportedlanguages = {'python': PythonTransform, 'r' : RTransform}
+        self.supportedlanguages = {'r' : RTransform}
         self.workbook = workbook
         self.unorderedcode = {}
         self.ignoredsheets = ignoredsheets #  ['DSA', 'PSA', 'PSA results', 'DSA results']
@@ -72,6 +71,6 @@ class ExcelReader:
 if __name__ == "__main__":
 
     path = "C:/Users/mo14776/OneDrive - University of Bristol/Documents/Health Economics/REEVER/Examples/Tests for the Excel- R conversion/test_workbook_3.xlsx"
-    a=ExcelReader(path,"Python")
+    a=ExcelReader(path,"r")
 
     a.read()
