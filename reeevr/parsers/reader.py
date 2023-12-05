@@ -10,7 +10,7 @@ class ExcelReader:
     def __init__(self,varconverter,workbook,outputlang,ignoredsheets):
         self.supportedlanguages = {'r' : RTransform}
         self.workbook = workbook
-        self.unorderedcode = {}
+        self.unorderedcode = varconverter.definednames
         self.ignoredsheets = ignoredsheets #  ['DSA', 'PSA', 'PSA results', 'DSA results']
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
