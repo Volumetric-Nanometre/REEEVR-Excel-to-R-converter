@@ -9,7 +9,7 @@ class VariableConverter:
     def __init__(self,workbook,language):
         self.definednames = {}
         self.language = language.lower()
-        self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_vector}
+        self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_list}
         self.get_defined_names(workbook)
 
 
@@ -118,8 +118,45 @@ class VariableConverter:
         """
         list_of_variables = []
         celllist = cols_from_range(rangecoordinates)
-        for row in celllist:
-            for variable in row:
+        numrows = 0
+        numcols = 0
+
+        for col in celllist:
+            numcols += 1
+            for variable in col:
+                if numcols == 1:
+                    numrows+=1
+                list_of_variables.append(self.excel_cell_to_variable(sheet,variable))
+
+        code = str(list_of_variables)
+        code = code.replace("'", "")
+        code = code.replace("[", "(")
+        code = code.replace("]", ")")
+        code = f"array(c{code},dim = c({numrows},{numcols}))"
+        return code, list_of_variables
+
+
+    def excel_range_to_r_list(self,sheet, rangecoordinates):
+        """
+        Convert an Excel range, eg A3:E10, into a
+        list containing all variables. Returns both a
+        code string where the entries are variable names,
+        and a list of the variables names used.
+        :param sheet: sheet name from workbook
+        :param rangecoordinates: Excel range coordinates, eg A3:E10
+        :return: code string representing the python list of variables
+        :return: list of the variable names used in the code string.
+        """
+        list_of_variables = []
+        celllist = cols_from_range(rangecoordinates)
+        numrows = 0
+        numcols = 0
+
+        for col in celllist:
+            numcols += 1
+            for variable in col:
+                if numcols == 1:
+                    numrows+=1
                 list_of_variables.append(self.excel_cell_to_variable(sheet,variable))
 
         code = str(list_of_variables)
