@@ -35,26 +35,56 @@ class VariableConverter:
 
         return self.defined_name_comparison(varname)
 
-    def get_defined_names(self,workbook):
+    def get_defined_names(self, workbook):
         """
         Acquire all global defined names
         for comparison and replacement purposes
         """
         try:
+
             for definedName in workbook.defined_names.definedName:
+
                 cellName = str(definedName.attr_text).split("!")
+                #print(f"{definedName.name} {cellName}")
+                if len(cellName) != 2:
+                    #print(f"Cell length out of bounds: {definedName.name} {cellName}")
+                    continue
+                if cellName[0].replace("'", "") in self.ignoredsheets:
+                    #print(f"Defined in ignored sheet: {definedName.name} {cellName}")
+                    continue
 
-                cellLocation = self.excel_cell_to_variable(cellName[0], cellName[1])
+                if ':' in cellName[1]:
+                    code, list_of_variables = self.excel_range_to_r_vector(cellName[0], cellName[1])
 
-                self.definednames[f'{definedName.name}'] = f'{cellLocation}'
+                else:
+                    cellLocation = self.excel_cell_to_variable(cellName[0], cellName[1])
+                    # {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]
+                    code = f'{cellLocation}'
+                    list_of_variables = [f'{cellLocation}']
+
+                self.definednames[f'{definedName.name}'] = [code, list_of_variables, 'n']
 
         except AttributeError:
             for definedName in workbook.defined_names.items():
-                cellName = str(definedName[1].attr_text).split("!")
 
-                cellLocation = self.excel_cell_to_variable(cellName[0], cellName[1])
+                cellName = str(definedName.attr_text).split("!")
+                if len(cellName) != 2:
+                    #print(f"Cell length out of bounds: {definedName.name} {cellName}")
+                    continue
+                if cellName[0].replace("'", "") in self.ignoredsheets:
+                    #print(f"Defined in ignored sheet: {definedName.name} {cellName}")
+                    continue
 
-                self.definednames[f'{definedName[1].name}'] = f'{cellLocation}'
+                if ':' in cellName[1]:
+                    code, list_of_variables = self.excel_range_to_r_vector(cellName[0], cellName[1])
+                else:
+                    cellLocation = self.excel_cell_to_variable(cellName[0], cellName[1])
+                    # {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]
+                    code = f'{cellLocation}'
+                    #print(code)
+                    list_of_variables = [f'{cellLocation}']
+
+                self.definednames[f'{definedName.name}'] = [code, list_of_variables, 'n']
 
         except:
             raise

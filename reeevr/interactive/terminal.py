@@ -25,9 +25,12 @@ willingnessToPay =[('Setup and run','D14')] #[('Model settings','N13')]
 
 ignoredsheets = ['DSA', 'PSA', 'PSA results', 'DSA results', 'State trace - Cemented', 'State trace - Hybrid', 'State trace - Reverse hybrid']#,'State trace - Uncemented']
 
-varconverter = VariableConverter(workbook, outputLang)
-
+ignoredsheets = ['DSA', 'PSA', 'PSA results', 'DSA results']#, 'State trace - Cemented', 'State trace - Hybrid', 'State trace - Reverse hybrid','State trace - Uncemented']
+print("[SUCCESS]")
+print("Initialise variable converter ... ",end="")
 varconverter = VariableConverter(workbook,ignoredsheets, outputLang)
+print("[SUCCESS]")
+print("Initialise outputs ... ",end="")
 outputs = ROutputs(varconverter, "", "", testOutput, costs, effs,treatmentNames,willingnessToPay)
 
 a = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
