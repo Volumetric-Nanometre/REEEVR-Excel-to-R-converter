@@ -31,7 +31,7 @@ class ROutputs:
 
     def output_cells(self):
 
-        outputCells = list(set(self.dataframeOutputs + self.fileOutputs + self.dataframeOutputs))
+        outputCells = list(set(self.dataframeOutputs + self.fileOutputs + self.dataframeOutputs + self.willingnesstopay))
         return outputCells
     def add_output_code(self):
 
