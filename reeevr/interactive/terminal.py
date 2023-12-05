@@ -27,6 +27,7 @@ ignoredsheets = ['DSA', 'PSA', 'PSA results', 'DSA results', 'State trace - Ceme
 
 varconverter = VariableConverter(workbook, outputLang)
 
+varconverter = VariableConverter(workbook,ignoredsheets, outputLang)
 outputs = ROutputs(varconverter, "", "", testOutput, costs, effs,treatmentNames,willingnessToPay)
 
 a = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)

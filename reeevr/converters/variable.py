@@ -6,7 +6,8 @@ class VariableConverter:
     standard method for continuity
     """
 
-    def __init__(self,workbook,language):
+    def __init__(self,workbook,ignoredsheets,language):
+        self.ignoredsheets = ignoredsheets
         self.definednames = {}
         self.language = language.lower()
         self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_list}
