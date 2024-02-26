@@ -1,6 +1,51 @@
+#' Excel RAND function
+#'
+#' Take number of random numbers, and the validation flag
+#' @param numberofruns integer number of PSA runs
+#' @param validate  TRUE/FALSE
+#' @return vector of random numbers, or a vector of validation samples
+#'
+#' @examples
+#' test <- excel_rand(numberofruns,validate)
+#'
+#' @export
+#'
+excel_rand <- function(numberofruns,validate) {
+
+  # If validate, provide array of static values that can be input into the EXCEL sheet.
+  # Values must exist as [0-1] as this is the output of runif
+  # Range of values are provided to provide validation.
+  if(validate){
+    return(c(1, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0))
+  }
+  else{
+    return(runif(numberofruns))
+  }
+
+}
+
+
+
+#' Excel INDEX function
+#'
+#' Take three inputs and return the value at location
+#' @param inputarray array to be accessed
+#' @param row  row of data
+#' @param column column of data
+#' @return data located at (row,column)
+#'
+#' @examples
+#' test <- excel_index(array(c(1,2,3,4),dim=c(2,2)),1,1)
+#'
+#' @export
+#'
+excel_index <- function(inputarray,row, column) {
+  return(inputarray[row,column])
+}
+
 #' Excel CHOOSE function
 #'
-#' Take N inputs and returnt he nth result.
+#' Take N inputs and return the nth result.
 #' @param n the nth input in the list of N inputs
 #' @param ... the N inputs. N<n is forbidden
 #' @return The nth input
@@ -87,15 +132,30 @@ excel_gammainv <- function(x, alpha, beta) {
 #' @return either sum(c(...)) or Reduce('+',list(...))
 #'
 #' @examples
-#' sumvals <- excel_sum_select(list(1,0,1))
-#' sumvals <- excel_sum_select(list(c(1,0,1),c(1,0,1),c(1,0,1)))
+#' sumvals <- excel_sum(list(1,0,1))
+#' sumvals <- excel_sum(list(c(1,0,1),c(1,0,1),c(1,0,1)))
 #' @export
-excel_sum_select <- function(...) {
-  vars = list(...)
-  for(val in vars)
-    if(length(val)>1)
-      return (Reduce('+',...))
+excel_sum <- function(arrayinput) {
 
-  return(sum(...))
+  if(length(dim(arrayinput)) >1)
+    return (Reduce('+',arrayinput))
+
+  return (colSums(arrayinput))
 }
 
+#' Construct the correct form of array
+#'
+#' @param ... input vars
+#' @return array
+#'
+#' @examples
+#'
+#' @export
+excel_array <- function(dim,...) {
+  rows = dim[0]
+  columns = dim[1]
+  vars = list(...)
+  for(var in vars){
+    print(dim(var))
+  }
+}
