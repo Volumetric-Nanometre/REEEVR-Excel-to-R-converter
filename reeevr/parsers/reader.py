@@ -1,6 +1,8 @@
 from openpyxl.formula import Tokenizer
 from parsers.excelast import ExcelAST
 from converters.formula import RTransform
+import time
+
 class ExcelReader:
     """
     Read the Excel workbook into an unordered
@@ -31,15 +33,31 @@ class ExcelReader:
         add to the unordered code dictionary
         :return:
         """
+        mylist = []
         for sheet in self.workbook.sheetnames:
-
+            print(f"Reading sheet: {sheet}")
             if sheet in self.ignoredsheets:
                 continue
+            allrows = list(self.workbook[sheet].rows)
+            for index, row in enumerate(allrows):#enumerate(self.workbook[sheet].iter_rows()):
+                print(f"Reading row: {index}/{len(allrows)}")
+                #print(set(row))
 
-            for row in self.workbook[sheet].iter_rows():
-                for cell in row:
-                    self.unorderedcode.update(self.cell_interpret(sheet,cell))
-
+                for indexc,cell in enumerate(row):
+                    mylist.append(self.cell_interpret(sheet,cell))
+                    #self.unorderedcode.update(self.cell_interpret(sheet,cell))
+                    #print(f"Reading cell: {indexc}/{len(row)}:{index}/{len(allrows)}")
+                #if(index%500):
+                #    self.unorderedcode.update(mycurrentdict)
+                #    mycurrentdict.clear()
+            #self.unorderedcode.update(mycurrentdict)
+            #mycurrentdict.clear()
+        print(mylist[0])
+        program_starts = time.time()
+        for val in mylist:
+            self.unorderedcode.update(val)
+        now = time.time()
+        print(f"{now - program_starts}")
 
     def cell_interpret(self,sheet,cell):
 
