@@ -146,7 +146,7 @@ class RTransform(TraverseTree):
         of the form 0<=x<=1
         """
         simplesyntax = self.walk(params)
-        return f"runif(numberOfRuns{''.join(simplesyntax)}"
+        return f"excel_rand(numberOfRuns, converter_validate{''.join(simplesyntax)}"
 
     def BETAINV(self,params):
         """
