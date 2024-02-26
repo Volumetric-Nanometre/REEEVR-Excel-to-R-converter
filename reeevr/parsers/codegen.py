@@ -1,4 +1,5 @@
-
+import copy
+import time
 
 class CodeGen:
     """
@@ -25,11 +26,11 @@ class CodeGen:
 
     def order_code_snippets(self):
         """
-        Order the code snippets such that
+        Order the code snippets such that they would successfully run in R
         :return:
         """
 
-        remainingcode = self.unorderedcode
+        remainingcode = copy.deepcopy(self.unorderedcode)
         count = 0
 
         while len(remainingcode) > 0 and count < 100:
@@ -43,7 +44,6 @@ class CodeGen:
                         break
                 if addtocode:
                     self.orderedcode.update({key : self.unorderedcode[key]})
-                    self.dependantvars = self.dependantvars + self.unorderedcode[key][1]
                     del remainingcode[key]
 
             count += 1
@@ -71,6 +71,48 @@ class CodeGen:
             else:
                 self.unusedcode[key] = self.orderedcode[key]
 
+        self.none_strip()
+
+    def cyclic_prune(self):
+        """
+        Prunes the tree of outermost unused leaves in a cyclic fashion.
+        Once two cycles pass with no changes, the tree is considered fully pruned,
+        """
+        numcull = 0
+        interimculled = copy.deepcopy(self.orderedcode)
+        starttime = time.time()
+        while(1):
+            print(f"prune round {numcull} - total prune time {time.time()-starttime}s")
+            staringlen = len(interimculled)
+            interimdependantvars = copy.deepcopy(self.dependantvars)
+            preprunedcode = copy.deepcopy(interimculled)
+            interimordered = {}
+            for key in list(preprunedcode.keys()):
+
+                addtocode = True
+
+                for var in preprunedcode[key][1]:
+                    if var not in interimordered.keys():
+                        addtocode = False
+                        break
+                if addtocode:
+                    interimordered.update({key: self.unorderedcode[key]})
+                    interimdependantvars = interimdependantvars + self.unorderedcode[key][1]
+                    del preprunedcode[key]
+
+            interimculled = {}
+            for key in interimordered.keys():
+
+                if key in interimdependantvars:
+                    interimculled[key] = self.orderedcode[key]
+                else:
+                    self.unusedcode[key] = self.orderedcode[key]
+
+            numcull += 1
+            if(len(interimculled)==staringlen or (time.time()-starttime) > 60):
+                print(f"{numcull} iterations to cull")
+                break
+        self.culledcode = interimculled
         self.none_strip()
     def generate_code(self):
         """
