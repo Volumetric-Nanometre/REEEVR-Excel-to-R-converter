@@ -21,7 +21,8 @@ class CodeGen:
 
         self.mandatoryCode = "library(reeevr)\n" \
                              "library(BCEA)\n" \
-                             "numberOfRuns = 1000\n"
+                             "numberOfRuns = 1000\n" \
+                             "converter_validate = TRUE\n"
 
 
     def order_code_snippets(self):
