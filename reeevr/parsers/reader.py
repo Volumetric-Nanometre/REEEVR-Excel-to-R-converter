@@ -1,4 +1,5 @@
-from openpyxl.formula import Tokenizer
+#from openpyxl.formula import Tokenizer
+from parsers.tokenizer import Tokenizer
 from parsers.excelast import ExcelAST
 from converters.formula import RTransform
 import time
