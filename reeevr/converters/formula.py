@@ -38,7 +38,8 @@ class RTransform(TraverseTree):
                                   "IFERROR(",
                                   "GAMMAINV(",
                                   "AND(",
-                                  "_xlfn.IFS("
+                                  "_xlfn.IFS(",
+                                  "OFFSET("
                                 ]
 
 
@@ -57,30 +58,6 @@ class RTransform(TraverseTree):
             with open("missing-func.log", "a+") as f:
                 f.write(f"{input} - {simplesyntax}\n")
             return f"UNKNOWN_FUNCTION_SEE_LOG_FILE({''.join(simplesyntax)}"
-        """
-        #elif ":OFFSET(" in input :
-
-
-            cellrange = input.split(':')
-            print(cellrange)
-
-            simplesyntax = self.walk(params)
-
-
-            def calcOffset(simplesyntax):
-
-                startcell = simplesyntax[0]
-                print(startcell)
-
-            calcOffset(simplesyntax)
-
-            with open("missing-func.log", "a+") as f:
-                f.write(f"{input} - {simplesyntax}\n")
-            return f"OFFSET({''.join(simplesyntax)}"
-            
-        """
-
-
 
     def IF(self, params):
 
