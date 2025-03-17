@@ -202,10 +202,26 @@ class CodeGen:
             for item in self.culledcode.items():
 
                 if item[1][2] != "f":
-                    f.write(f"{item[0]} = {item[1][0]}\n")
+                    outstr = f"{item[0]} = {item[1][0]}\n"
                 else:
                     item[1][0] = item[1][0].replace("%sep%", ",")
-                    f.write(f"{item[1][0]}\n")
+
+                    outstr = f"{item[1][0]}\n"
+
+                if len(outstr) > 4000:
+                    temp = outstr.split(",")
+                    outstr = temp[0]
+                    for index, part in enumerate(temp):
+                        if index == 0:
+                            continue
+                        elif not index % 50:
+                            outstr += ',\n' + part
+                        else:
+                            outstr += ',' + part
+
+                f.write(outstr)
+
+
 
             f.write(f"{self.outputs.add_output_code()}")
 
