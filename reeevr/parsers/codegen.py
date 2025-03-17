@@ -1,6 +1,7 @@
 import copy
 import time
-
+import re
+import openpyxl.utils.cell as opxlUtilCell
 class CodeGen:
     """
     Takes unordered code output then:
@@ -10,7 +11,7 @@ class CodeGen:
     4. outputs final code file
     """
 
-    def __init__(self, unorderedcode, outputs,codefile):
+    def __init__(self, varconverter, unorderedcode, outputs,codefile):
         self.unorderedcode = unorderedcode
         self.orderedcode = {}
         self.culledcode = {}
@@ -18,6 +19,8 @@ class CodeGen:
         self.outputs = outputs
         self.dependantvars = outputs.output_cells()
         self.codefile = codefile
+        self.varconverter = varconverter
+
 
         self.mandatoryCode = "library(reeevr)\n" \
                              "library(BCEA)\n" \
@@ -55,6 +58,80 @@ class CodeGen:
             with open("missing-cells.txt","w") as f:
                 f.write(errorstring)
             #raise KeyError(f"Code cannot be ordered as variables are missing their corresponding dependancies. See missing-cells.txt")
+
+
+    def second_pass(self):
+        """
+        Perform a second pass over the code to correct any more difficult replacements.
+        """
+        for item in self.unorderedcode.items():
+
+            if item[1][2] == "f":
+
+                if "excel_offset" in item[1][0]:
+
+                    splittext = re.search(r'\((.*)\)',item[1][0]).group(1)
+                    restOfString = item[1][0].split(splittext)
+                    patterntext = splittext
+                    splittext = splittext.split("excel_offset(")[1]
+                    splittext = splittext.replace(")","")
+                    splittext = splittext.split("%sep%")
+
+                    sheet, cell = splittext[0].split("_")
+
+                    arrayBegin = opxlUtilCell.coordinate_to_tuple(cell)
+
+                    # Get end column letter
+                    try:
+                        colOffset = int(splittext[2])
+
+                    except ValueError:
+
+                        for val in item[1][1]:
+                            if val in splittext[2]:
+                                while(self.unorderedcode[val][2] =='n'):
+                                    if not self.unorderedcode[val][1]:
+                                        colOffset = int(self.unorderedcode[val][0])
+                                        break
+                                    else:
+                                        val = self.unorderedcode[val][1][0]
+
+                    # Get end row number
+                    try:
+                        rowOffset = int(splittext[1])
+
+                    except ValueError:
+
+                        for val in item[1][1]:
+                            if val in splittext[1]:
+                                while(self.unorderedcode[val][2] =='n'):
+                                    if not self.unorderedcode[val][1]:
+                                        rowOffset = int(self.unorderedcode[val][0])
+                                        break
+                                    else:
+                                        val = self.unorderedcode[val][1][0]
+
+                    # Add offsets to start col and row to get end cell
+                    arrayEnd = (arrayBegin[1] + colOffset, arrayBegin[0] + rowOffset)
+
+                    colLetter = opxlUtilCell.get_column_letter(arrayEnd[0])
+                    arrayEnd = f"{colLetter}{arrayEnd[1]}"
+
+                    if ":" in patterntext:
+
+                        splitarray = patterntext.split(":")
+
+                        if "excel_offset(" in splitarray[0]:
+                            arrayrange = f"{arrayEnd}:{splitarray[1].replace(f'{sheet}_','')}"
+                        else:
+                            arrayrange = f"{splitarray[0].replace(f'{sheet}_','')}:{arrayEnd}"
+
+                    code, list_of_variables = self.varconverter.excel_range(sheet, arrayrange)
+
+                    finalCode = f"{restOfString[0]}{code}{restOfString[1]}"
+                    self.unorderedcode.update({item[0] : [finalCode,item[1][1] + list_of_variables,item[1][2]]})
+
+
 
     def cull_code_snippets(self):
         """
@@ -153,6 +230,7 @@ if __name__ == "__main__":
     outputs = ['Frontend_E8', 'Frontend_E9']
     b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
 
+    b.second_pass()
     b.order_code_snippets()
     b.cull_code_snippets()
     b.generate_code()
