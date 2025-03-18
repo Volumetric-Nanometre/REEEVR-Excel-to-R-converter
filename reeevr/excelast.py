@@ -1,5 +1,5 @@
 #from openpyxl.formula import Tokenizer
-from parsers.tokenizer import Tokenizer
+from tokenizer import Tokenizer
 
 class ParseNode:
 

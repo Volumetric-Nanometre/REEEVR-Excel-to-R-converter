@@ -1,4 +1,4 @@
-from parsers.traverse import TraverseTree
+from traverse import TraverseTree
 
 
 class RTransform(TraverseTree):

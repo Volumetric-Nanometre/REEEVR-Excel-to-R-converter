@@ -1,7 +1,7 @@
-from parsers.reader import ExcelReader
-from parsers.codegen import CodeGen
-from parsers.outputs import ROutputs
-from converters.variable import VariableConverter
+from reader import ExcelReader
+from codegen import CodeGen
+from outputs import ROutputs
+from variable import VariableConverter
 import openpyxl
 import os
 

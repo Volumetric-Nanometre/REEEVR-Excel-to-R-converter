@@ -1,7 +1,7 @@
 #from openpyxl.formula import Tokenizer
-from parsers.tokenizer import Tokenizer
-from parsers.excelast import ExcelAST
-from converters.formula import RTransform
+from tokenizer import Tokenizer
+from excelast import ExcelAST
+from formula import RTransform
 import time
 
 class ExcelReader:

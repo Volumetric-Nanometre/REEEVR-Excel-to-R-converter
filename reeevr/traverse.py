@@ -1,5 +1,5 @@
-import parsers.excelast as excelast
-from converters.variable import VariableConverter
+import excelast as excelast
+from variable import VariableConverter
 
 
 class TraverseTree:
