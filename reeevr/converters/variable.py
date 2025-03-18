@@ -202,8 +202,7 @@ class VariableConverter:
 
         varname = self.excel_cell_to_variable(sheet,cell.coordinate)
 
-        return {varname :[f"\'{cell.value}\'",[],cell.data_type]}
-
+        return {varname :[f"\"{cell.value}\"",[],cell.data_type]}
 
     def variable_numeric_literal(self,sheet,cell):
 
