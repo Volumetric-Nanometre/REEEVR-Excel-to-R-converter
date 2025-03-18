@@ -137,7 +137,7 @@ excel_gammainv <- function(x, alpha, beta) {
 #' @export
 excel_sum <- function(arrayinput) {
 
-  if(length(dim(arrayinput)) >1)
+  if(length(dim(arrayinput)) < 1)
     return (Reduce('+',arrayinput))
 
   return (colSums(arrayinput))
