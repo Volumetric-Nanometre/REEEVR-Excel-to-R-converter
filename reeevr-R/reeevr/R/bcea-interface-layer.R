@@ -53,14 +53,12 @@ BCEA_matrix <- function(...) {
 
 BCEA_all_output_loop <- function(costs,effectiveness,treatments,Kmax) {
 
-  outputpath <- "C:/Users/mo14776/Documents/tests"
-
   totalRef <- length(treatments)
 
 
   for(ref in 1:totalRef){
 
-    outfolder <- file.path(outputpath, treatments[ref])
+    outfolder <- treatments[ref]
     if(!dir.exists(outfolder))
       dir.create(outfolder)
 
