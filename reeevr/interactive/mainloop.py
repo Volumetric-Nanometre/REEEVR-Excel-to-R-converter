@@ -33,7 +33,9 @@ class MainLoop:
     def set_vals(self, path, testoutput, ignoredsheets, costs, effectiveness, treatments, willingtopay):
         self.path = path
 
-        self.testOutput = testoutput.split(",")
+        self.testOutput = testoutput.replace("!", ",")
+        self.testOutput = self.testOutput.split(",")
+
         self.testOutput = list(zip([ val.strip() for index, val in enumerate(self.testOutput) if index%2 == 0],
                                    [val.strip() for index, val in enumerate(self.testOutput) if index%2 == 1]))
         self.output(self.testOutput)
@@ -42,21 +44,25 @@ class MainLoop:
         self.ignoredsheets = [val.strip() for val in self.ignoredsheets]
         self.output(self.ignoredsheets)
 
-        self.costs = costs.split(",")
+        self.costs = costs.replace("!", ",")
+        self.costs = self.costs.split(",")
         self.costs = list(zip([ val.strip() for index, val in enumerate(self.costs) if(index%2 == 0)],
                               [val.strip() for index, val in enumerate(self.costs) if index%2 == 1]))
         self.output(self.costs)
 
-        self.effectiveness = effectiveness.split(",")
+        self.effectiveness = effectiveness.replace("!", ",")
+        self.effectiveness = self.effectiveness.split(",")
         self.effectiveness = list(zip([ val.strip() for index, val in enumerate(self.effectiveness) if index%2 == 0],
                                       [val.strip() for index, val in enumerate(self.effectiveness) if index%2 == 1]))
         self.output(self.effectiveness)
 
-        self.treatments = treatments.split(",")
+        self.treatments = treatments.replace("!", ",")
+        self.treatments = self.treatments.split(",")
         self.treatments = [val.strip() for val in self.treatments]
         self.output(self.treatments)
 
-        self.willingnesstopay = willingtopay.split(",")
+        self.willingnesstopay = willingtopay.replace("!", ",")
+        self.willingnesstopay = self.willingnesstopay.split(",")
         self.willingnesstopay = list(zip([val.strip() for index, val in enumerate(self.willingnesstopay) if index % 2 == 0],
                                          [val.strip() for index, val in enumerate(self.willingnesstopay) if index % 2 == 1]))
         self.output(self.willingnesstopay)
@@ -80,6 +86,11 @@ class MainLoop:
         self.text = ""
         try:
             os.remove("missing-func.log")
+        except:
+            pass
+
+        try:
+            os.remove("missing-cells.txt")
         except:
             pass
 
@@ -110,7 +121,8 @@ class MainLoop:
             self.update_progress()
 
             self.output("Generate unordered code ... ",end="")
-            b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
+            b = CodeGen(varconverter, a.unorderedcode, outputs, codefile="test_output.R")
+            b.second_pass()
             self.output("[SUCCESS]")
             self.update_progress()
 
