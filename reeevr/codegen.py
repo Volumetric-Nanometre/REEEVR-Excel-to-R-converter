@@ -237,7 +237,7 @@ class CodeGen:
 
 if __name__ == "__main__":
 
-    from parsers.reader import ExcelReader
+    from reader import ExcelReader
 
     path = "../../tests/test workbooks/test_workbook_3.xlsx"
     a=ExcelReader(path,"R")
