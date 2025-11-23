@@ -28,6 +28,10 @@ class RTransform(TraverseTree):
                                     "NORMINV(":self.NORMINV,
                                     "_xlfn.GAMMA.INV(": self.GAMMAINV,
                                     "GAMMAINV(": self.GAMMAINV,
+                                    "_xlfn.BINOM.INV(": self.BINOMINV,
+                                    "BINOMINV(": self.BINOMINV,
+                                    "_xlfn.LOGNORM.INV(": self.LOGNORMINV,
+                                    "LOGNORMINV(": self.LOGNORMINV,
                                     "_xlfn.STDEV.S(": self.STDEVSAMPLE,
                                     "_xlfn.CONCAT(": self.CONCAT,
                                     "IF(" : self.IF,
@@ -137,6 +141,20 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"qbeta({''.join(simplesyntax)}"
+
+    def BINOMINV(self,params):
+        """
+        Returns the inverse of the normal cumulative distribution for the specified mean and standard deviation
+        """
+        simplesyntax = self.walk(params)
+        return f"qbinom({''.join(simplesyntax)}"
+
+    def LOGNORMINV(self, params):
+        """
+        Returns the inverse of the gamma cumulative distribution for the specified mean and standard deviation
+        """
+        simplesyntax = self.walk(params)
+        return f"qlnorm({''.join(simplesyntax)}"
 
     def NORMINV(self,params):
         """
