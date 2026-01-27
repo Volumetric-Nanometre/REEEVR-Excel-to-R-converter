@@ -3,7 +3,7 @@ from traverse import TraverseTree
 
 class RTransform(TraverseTree):
     """
-    Class that deals explicitly in Excel -> Python
+    Class that deals explicitly in Excel -> R
     transformations only.
     """
 
@@ -17,6 +17,8 @@ class RTransform(TraverseTree):
                                   "ABS(",
                                   "MAX(",
                                   "MIN(",
+                                  "ROUND(",
+
                                 ]
 
         self.adaptive_transform = { "AVERAGE(": self.AVERAGE,
@@ -26,27 +28,56 @@ class RTransform(TraverseTree):
                                     "BETAINV(": self.BETAINV,
                                     "_xlfn.NORM.INV(": self.NORMINV,
                                     "NORMINV(":self.NORMINV,
-                                    "_xlfn.GAMMA.INV(": self.GAMMAINV,
-                                    "GAMMAINV(": self.GAMMAINV,
-                                    "_xlfn.BINOM.INV(": self.BINOMINV,
-                                    "BINOMINV(": self.BINOMINV,
                                     "_xlfn.LOGNORM.INV(": self.LOGNORMINV,
-                                    "LOGNORMINV(": self.LOGNORMINV,
+                                    "LOGINV(": self.LOGNORMINV,
                                     "_xlfn.STDEV.S(": self.STDEVSAMPLE,
-                                    "_xlfn.CONCAT(": self.CONCAT,
+                                    "STDEV(": self.STDEVSAMPLE,
                                     "IF(" : self.IF,
-                                  }
+                                    "INT(" : self.INT,
+                                    "LEN(" : self.LEN,
+                                    "UPPER(" : self.UPPER,
+                                    "LOWER(" : self.LOWER,
+
+
+                                    }
 
         self.reeevr_transform = [ "SUM(",
+                                  "_xlfn.GAMMA.INV(",
+                                  "GAMMAINV(",
+                                  "_xlfn.BINOM.INV(",
+                                  "_xlfn.CONCAT(",
+                                  "CONCATENATE(",
                                   "INDEX(",
                                   "CHOOSE(",
                                   "COUNTA(",
                                   "COUNTIF(",
                                   "IFERROR(",
-                                  "GAMMAINV(",
                                   "AND(",
                                   "_xlfn.IFS(",
-                                  "OFFSET("
+                                  "OFFSET(",
+                                  "POWER(",
+                                  "PRODUCT(",
+                                  "FLOOR(",
+                                  "CEILING(",
+                                  "LEFT(",
+                                  "RIGHT(",
+                                  "MID(",
+                                  "_xlfn.NORM.DIST(",
+                                  "NORMDIST(",
+                                  "_xlfn.NORM.S.DIST(",
+                                  "NORMSDIST(",
+                                  "_xlfn.GAMMA.DIST(",
+                                  "GAMMADIST(",
+                                  "_xlfn.LOGNORM.DIST(",
+                                  "LOGNORMDIST(",
+                                  "_xlfn.BINOM.DIST(",
+                                  "BINOMDIST(",
+                                  "_xlfn.BETA.DIST(",
+                                  "BETADIST(",
+                                  "_xlfn.WEIBULL.DIST(",
+                                  "WEIBULL(",
+                                  "MMULT("
+
                                 ]
 
 
@@ -142,16 +173,9 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"qbeta({''.join(simplesyntax)}"
 
-    def BINOMINV(self,params):
-        """
-        Returns the inverse of the normal cumulative distribution for the specified mean and standard deviation
-        """
-        simplesyntax = self.walk(params)
-        return f"qbinom({''.join(simplesyntax)}"
-
     def LOGNORMINV(self, params):
         """
-        Returns the inverse of the gamma cumulative distribution for the specified mean and standard deviation
+        Returns the inverse of the lognorm cumulative distribution for the specified mean and standard deviation
         """
         simplesyntax = self.walk(params)
         return f"qlnorm({''.join(simplesyntax)}"
@@ -163,13 +187,6 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"qnorm({''.join(simplesyntax)}"
 
-    def GAMMAINV(self, params):
-        """
-        Returns the inverse of the gamma cumulative distribution for the specified mean and standard deviation
-        """
-        simplesyntax = self.walk(params)
-        return f"qgamma({''.join(simplesyntax)}"
-
     def STDEVSAMPLE(self,params):
         """
         Standard deviation of a sample
@@ -177,13 +194,41 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"sd(unlist({''.join(simplesyntax)})"
 
-    def CONCAT(self, params):
-        """
-        Return the concatination of the inputs
-        """
 
+    def INT(self, params):
+        """
+        INT in Excel works as the floor() function in R.
+        e.g.
+        INT(3.1) -> 3, floor(3.1) -> 3
+        INT(3.9) -> 3, floor(3.9) -> 3
+        INT(-3.1) -> -4, floor(-3.1) -> -4
+        INT(-3.9) -> -4, floor(-3.9) -> 4
+        """
         simplesyntax = self.walk(params)
-        return f"paste({''.join(simplesyntax)}"
+        return f"floor({''.join(simplesyntax)}"
+
+    def LEN(self, params):
+        """
+        Returns the number of chars in a string
+        """
+        simplesyntax = self.walk(params)
+        return f"nchar({''.join(simplesyntax)}"
+
+    def UPPER(self, params):
+        """
+        Capitalise all letters in string
+        """
+        simplesyntax = self.walk(params)
+        return f"toupper({''.join(simplesyntax)}"
+
+    def LOWER(self, params):
+        """
+        Capitalise all letters in string
+        """
+        simplesyntax = self.walk(params)
+        return f"tolower({''.join(simplesyntax)}"
+
+
 
 if __name__ == "__main__":
 
