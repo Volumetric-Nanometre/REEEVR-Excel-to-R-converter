@@ -18,6 +18,7 @@ class RTransform(TraverseTree):
                                   "MAX(",
                                   "MIN(",
                                   "ROUND(",
+                                  "LOG10("
 
                                 ]
 
@@ -28,6 +29,8 @@ class RTransform(TraverseTree):
                                     "BETAINV(": self.BETAINV,
                                     "_xlfn.NORM.INV(": self.NORMINV,
                                     "NORMINV(":self.NORMINV,
+                                    "NORMSINV(": self.NORMINV,
+                                    "_xlfn.NORM.S.INV(": self.NORMINV,
                                     "_xlfn.LOGNORM.INV(": self.LOGNORMINV,
                                     "LOGINV(": self.LOGNORMINV,
                                     "_xlfn.STDEV.S(": self.STDEVSAMPLE,
@@ -41,44 +44,19 @@ class RTransform(TraverseTree):
 
                                     }
 
-        self.reeevr_transform = [ "SUM(",
-                                  "_xlfn.GAMMA.INV(",
-                                  "GAMMAINV(",
-                                  "_xlfn.BINOM.INV(",
-                                  "_xlfn.CONCAT(",
-                                  "CONCATENATE(",
-                                  "INDEX(",
-                                  "CHOOSE(",
-                                  "COUNTA(",
-                                  "COUNTIF(",
-                                  "IFERROR(",
-                                  "AND(",
-                                  "_xlfn.IFS(",
-                                  "OFFSET(",
-                                  "POWER(",
-                                  "PRODUCT(",
-                                  "FLOOR(",
-                                  "CEILING(",
-                                  "LEFT(",
-                                  "RIGHT(",
-                                  "MID(",
-                                  "_xlfn.NORM.DIST(",
-                                  "NORMDIST(",
-                                  "_xlfn.NORM.S.DIST(",
-                                  "NORMSDIST(",
-                                  "_xlfn.GAMMA.DIST(",
-                                  "GAMMADIST(",
-                                  "_xlfn.LOGNORM.DIST(",
-                                  "LOGNORMDIST(",
-                                  "_xlfn.BINOM.DIST(",
-                                  "BINOMDIST(",
-                                  "_xlfn.BETA.DIST(",
-                                  "BETADIST(",
-                                  "_xlfn.WEIBULL.DIST(",
-                                  "WEIBULL(",
-                                  "MMULT("
-
-                                ]
+        self.reeevr_transform = [ "SUM(", "_xlfn.GAMMA.INV(", "GAMMAINV(", "_xlfn.BINOM.INV(", "_xlfn.CONCAT(",
+                                  "CONCATENATE(", "INDEX(", "CHOOSE(", "IFERROR(", "AND(", "_xlfn.IFS(", "OFFSET(",
+                                  "POWER(", "PRODUCT(", "FLOOR(", "CEILING(", "LEFT(", "RIGHT(", "MID(",
+                                  "_xlfn.NORM.DIST(", "NORMDIST(", "_xlfn.NORM.S.DIST(", "NORMSDIST(",
+                                  "_xlfn.GAMMA.DIST(", "GAMMADIST(", "_xlfn.LOGNORM.DIST(", "LOGNORMDIST(",
+                                  "_xlfn.BINOM.DIST(", "BINOMDIST(", "_xlfn.BETA.DIST(", "BETADIST(",
+                                  "_xlfn.WEIBULL.DIST(", "WEIBULL(", "LOG(", "NEGBINOMDIST(", "_xlfn.NEGBINOM.DIST(",
+                                  "CHIDIST(", "CHIINV(", "_xlfn.CHISQ.DIST(", "_xlfn.CHISQ.DIST.RT(",
+                                  "_xlfn.CHISQ.INV(", "_xlfn.CHISQ.INV.RT(", "_xlfn.EXPON.DIST(", "EXPONDIST(",
+                                  "_xlfn.F.DIST(", "_xlfn.F.DIST.RT(", "_xlfn.F.INV(", "_xlfn.F.INV.RT(", "POISSON(",
+                                  "_xlfn.POISSON.DIST(", "_xlfn.T.DIST(", "_xlfn.T.DIST.2T(", "_xlfn.T.DIST.RT(",
+                                  "_xlfn.T.INV(", "_xlfn.T.INV.2T(", "TDIST(",
+                                  ]
 
 
     def formula_converter(self,input,params):
@@ -153,7 +131,7 @@ class RTransform(TraverseTree):
         Arithmetic mean
         """
         simplesyntax = self.walk(params)
-        return f"mean(unlist({''.join(simplesyntax)})"
+        return f"mean({''.join(simplesyntax)}"
 
     def RAND(self,params):
         """
@@ -192,7 +170,7 @@ class RTransform(TraverseTree):
         Standard deviation of a sample
         """
         simplesyntax = self.walk(params)
-        return f"sd(unlist({''.join(simplesyntax)})"
+        return f"sd({''.join(simplesyntax)}"
 
 
     def INT(self, params):
