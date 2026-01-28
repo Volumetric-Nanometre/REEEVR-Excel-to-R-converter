@@ -50,7 +50,6 @@ excel_normdist <- function(x, mean, sd,cumulative) {
 
 #' Excel NORM.S.DIST function
 #'
-#' return correct norm distribution
 #' @param x distribution value
 #' @param cumulative TRUE/FALSE flag switching between cumulative distribution function, and probability mass function.
 #' @return qnorm or dnorm
@@ -73,7 +72,6 @@ excel__xlfn.norm.s.dist <- function(x,cumulative) {
 
 #' Excel NORMSDIST function
 #'
-#' return correct norm distribution
 #' @param x distribution value
 #' @return qnorm
 #'

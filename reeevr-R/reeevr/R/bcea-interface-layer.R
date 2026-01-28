@@ -72,6 +72,7 @@ BCEA_all_output_loop <- function(costs,effectiveness,treatments,Kmax) {
     dev.off()
 
   }
+
 }
 
 
