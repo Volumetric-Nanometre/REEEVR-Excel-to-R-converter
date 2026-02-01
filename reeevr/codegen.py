@@ -192,7 +192,7 @@ class CodeGen:
                 break
         self.culledcode = interimculled
         self.none_strip()
-    def generate_code(self):
+    def generate_code(self, writeoutputs=True):
         """
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
         """
@@ -222,8 +222,8 @@ class CodeGen:
                 f.write(outstr)
 
 
-
-            f.write(f"{self.outputs.add_output_code()}")
+            if writeoutputs:
+                f.write(f"{self.outputs.add_output_code()}")
 
     def none_strip(self):
         """
