@@ -75,3 +75,11 @@ array_unequal <- function(...){
   print("Unequal")
   return()
 }
+
+
+generic_list_or_rand_input <- function(arrayinput,funclist,funcrand){
+  if(length(dim(arrayinput)) < 1)
+    return (funclist(unlist(arrayinput)))
+
+  return (funcrand(arrayinput))
+}

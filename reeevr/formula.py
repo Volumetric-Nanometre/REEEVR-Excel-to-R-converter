@@ -22,8 +22,7 @@ class RTransform(TraverseTree):
 
                                 ]
 
-        self.adaptive_transform = { "AVERAGE(": self.AVERAGE,
-                                    "RAND(": self.RAND,
+        self.adaptive_transform = { "RAND(": self.RAND,
                                     "LN(": self.NATURALLOG,
                                     "_xlfn.BETA.INV(": self.BETAINV,
                                     "BETAINV(": self.BETAINV,
@@ -33,14 +32,12 @@ class RTransform(TraverseTree):
                                     "_xlfn.NORM.S.INV(": self.NORMINV,
                                     "_xlfn.LOGNORM.INV(": self.LOGNORMINV,
                                     "LOGINV(": self.LOGNORMINV,
-                                    "_xlfn.STDEV.S(": self.STDEVSAMPLE,
-                                    "STDEV(": self.STDEVSAMPLE,
                                     "IF(" : self.IF,
                                     "INT(" : self.INT,
                                     "LEN(" : self.LEN,
                                     "UPPER(" : self.UPPER,
                                     "LOWER(" : self.LOWER,
-
+                                    "PI(" : self.PI,
 
                                     }
 
@@ -55,7 +52,9 @@ class RTransform(TraverseTree):
                                   "_xlfn.CHISQ.INV(", "_xlfn.CHISQ.INV.RT(", "_xlfn.EXPON.DIST(", "EXPONDIST(",
                                   "_xlfn.F.DIST(", "_xlfn.F.DIST.RT(", "_xlfn.F.INV(", "_xlfn.F.INV.RT(", "POISSON(",
                                   "_xlfn.POISSON.DIST(", "_xlfn.T.DIST(", "_xlfn.T.DIST.2T(", "_xlfn.T.DIST.RT(",
-                                  "_xlfn.T.INV(", "_xlfn.T.INV.2T(", "TDIST(",
+                                  "_xlfn.T.INV(", "_xlfn.T.INV.2T(", "TDIST(", "MEDIAN(", "AVERAGE(", "STDEV(",
+                                  "_xlfn.STDEV.S(", "STDEVP(", "_xlfn.STDEV.P(", "VAR(", "_xlfn.VAR.S(", "VARP(",
+                                  "_xlfn.VAR.P(", "COUNT(", "COUNTA(", "COUNTIF("
                                   ]
 
 
@@ -126,12 +125,6 @@ class RTransform(TraverseTree):
         simplesyntax = self.walk(params)
         return f"log({''.join(simplesyntax)}"
 
-    def AVERAGE(self, params):
-        """
-        Arithmetic mean
-        """
-        simplesyntax = self.walk(params)
-        return f"mean({''.join(simplesyntax)}"
 
     def RAND(self,params):
         """
@@ -164,13 +157,6 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"qnorm({''.join(simplesyntax)}"
-
-    def STDEVSAMPLE(self,params):
-        """
-        Standard deviation of a sample
-        """
-        simplesyntax = self.walk(params)
-        return f"sd({''.join(simplesyntax)}"
 
 
     def INT(self, params):
@@ -205,6 +191,12 @@ class RTransform(TraverseTree):
         """
         simplesyntax = self.walk(params)
         return f"tolower({''.join(simplesyntax)}"
+
+    def PI(self, params):
+        """
+        Return pi
+        """
+        return f"pi"
 
 
 

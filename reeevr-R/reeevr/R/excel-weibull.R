@@ -1,8 +1,8 @@
 #' Excel WEIBULL.DIST function
 #'
 #' @param x value to evaluate
-#' @param alpha
-#' @param beta
+#' @param alpha shape
+#' @param beta scale
 #' @param cumulative TRUE/FALSE flag switching between cumulative distribution function, and probability mass function.
 #' @return qbinom or dbinom
 #'
@@ -25,8 +25,8 @@ excel__xlfn.weibull.dist <- function(x, alpha, beta, cumulative) {
 #' Excel WEIBULL function
 #'
 #' @param x value to evaluate
-#' @param alpha
-#' @param beta
+#' @param alpha shape
+#' @param beta scale
 #' @param cumulative TRUE/FALSE flag switching between cumulative distribution function, and probability mass function.
 #' @return qbinom or dbinom
 #'
