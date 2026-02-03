@@ -7,7 +7,7 @@ import copy
 import unittest
 import rpy2.robjects as robjects
 
-@unittest.skip
+
 class SimpleFunctionTests(unittest.TestCase):
     """
     Unit tests covering the functions treated as simple transforms in formula.py
@@ -43,8 +43,8 @@ class SimpleFunctionTests(unittest.TestCase):
     #
     # Single value function tests
     #
-    def test_full_excel(self):
-        for i in range(3, 10):
+    def test_simple_excel(self):
+        for i in range(3, 20):
             function = self.globalenv[f'Sheet1_B{i}'][0]
             self.assertAlmostEqual(self.globalenv[f'Sheet1_I{i}'][0], self.globalenv[f'Sheet1_O{i}'][0],
                                    msg=f"{function} - Sheet1_I{i}\n ... [FAIL]")
@@ -224,7 +224,7 @@ class ArrayValidationTests(unittest.TestCase):
         self.globalenv = robjects.globalenv
 
     def test_array_validation_excel(self):
-        for i in range(13, 25):
+        for i in range(13, 37):
             function = self.globalenv[f'Sheet1_B{i}'][0]
             self.assertAlmostEqual(self.globalenv[f'Sheet1_C{i}'][0], self.globalenv[f'Sheet1_R{i}'][0],
                                    msg=f"{function} - Sheet1_C{i}\n ... [FAIL]")
@@ -290,7 +290,7 @@ class REEEVRFunctionTests(unittest.TestCase):
         self.globalenv = robjects.globalenv
 
     def test_reeevr_excel(self):
-        for i in range(3, 35):
+        for i in range(3, 58):
             function = self.globalenv[f'Sheet1_B{i}'][0]
             self.assertAlmostEqual(self.globalenv[f'Sheet1_I{i}'][0], self.globalenv[f'Sheet1_O{i}'][0],
                                    msg=f"{function} - Sheet1_I{i}\n ... [FAIL]")

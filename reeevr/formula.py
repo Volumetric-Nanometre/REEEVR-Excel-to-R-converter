@@ -12,14 +12,8 @@ class RTransform(TraverseTree):
 
         super().__init__(excelast, sheet, coordinate,varconverter)
 
-        self.simple_transform = [ "SQRT(",
-                                  "EXP(",
-                                  "ABS(",
-                                  "MAX(",
-                                  "MIN(",
-                                  "ROUND(",
-                                  "LOG10("
-
+        self.simple_transform = [ "SQRT(", "EXP(", "ABS(", "ROUND(", "LOG10(", "SIN(", "COS(", "TAN(", "ASIN(", "ACOS(",
+                                  "ATAN(", "SINH(", "COSH(", "TANH(", "ASINH(", "ACOSH(", "ATANH("
                                 ]
 
         self.adaptive_transform = { "RAND(": self.RAND,
@@ -54,7 +48,9 @@ class RTransform(TraverseTree):
                                   "_xlfn.POISSON.DIST(", "_xlfn.T.DIST(", "_xlfn.T.DIST.2T(", "_xlfn.T.DIST.RT(",
                                   "_xlfn.T.INV(", "_xlfn.T.INV.2T(", "TDIST(", "MEDIAN(", "AVERAGE(", "STDEV(",
                                   "_xlfn.STDEV.S(", "STDEVP(", "_xlfn.STDEV.P(", "VAR(", "_xlfn.VAR.S(", "VARP(",
-                                  "_xlfn.VAR.P(", "COUNT(", "COUNTA(", "COUNTIF("
+                                  "_xlfn.VAR.P(", "COUNT(", "COUNTA(", "COUNTIF(", "_xlfn.FLOOR.MATH(",
+                                  "_xlfn.CEILING.MATH(", "MIN(", "MAX(", "DEGREES(", "RADIANS(", "QUARTILE(",
+                                  "_xlfn.QUARTILE.INC(",
                                   ]
 
 

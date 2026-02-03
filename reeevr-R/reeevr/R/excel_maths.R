@@ -58,52 +58,175 @@ excel_product <- function(...) {
     return (excel_product(args))
 }
 
-#' Convert FLOOR(x, n)
-#' See https://stackoverflow.com/questions/47177246/floor-and-ceiling-with-2-or-more-significant-digits
+#' Excel FLOOR Function
 #'
-#' @param x list or single value
-#' @param n number of significant figures - integer
-#' @return
+#' Rounds a number down to the nearest multiple of significance.
+#' This function replicates the behavior of Excel's FLOOR function.
 #'
+#' @param number The numeric value to round down
+#' @param significance The multiple to which you want to round
+#' @return The rounded number
 #' @examples
-#' floorSingleVarOne <- excel_floor(2.3456, 3)
-#' floorSingleVarTwo <- excel_floor(2345.6, 2)
-#' floorSingleVarOneNeg <- excel_floor(-2.3456, 3)
-#' floorSingleVarTwoNeg <- excel_floor(-2345.6, 2)
+#' excel_floor(3.7, 2)      # Returns 2
+#' excel_floor(26.75, 0.1)  # Returns 26.7
+#' excel_floor(-2.5, -2)    # Returns -2
+#' excel_floor(1.5, 1)      # Returns 1
 #'
-#' floorListleVars <- excel_floor(c(2.3456, 2345, -2.345,-2093.987,-223,0), 3)
-#' @export
-excel_floor <- function(x, n) {
+excel_floor <- function(number, significance) {
+  # Handle NA values
+  if (is.na(number) || is.na(significance)) {
+    return(NA)
+  }
 
-  pow <- floor( log10( abs(x) ) ) + 1 - n
-  y <- floor(x / 10 ^ pow) * 10^pow
-  # handle the x = 0 case
-  y[x==0] <- 0
-  return (y)
+  # If significance is 0, return 0
+  if (significance == 0) {
+    return (0)
+  }
+
+  return (floor(number / significance) * significance)
 }
 
-#' Convert CEILING(x, n)
-#' See https://stackoverflow.com/questions/47177246/floor-and-ceiling-with-2-or-more-significant-digits
+#' Excel FLOOR.MATH Function
 #'
-#' @param x list or single value
-#' @param n number of significant figures - integer
-#' @return
+#' Rounds a number down to the nearest integer or to the nearest multiple of significance.
+#' Unlike FLOOR, FLOOR.MATH allows you to control the rounding direction for negative numbers.
 #'
+#' @param number The numeric value to round down
+#' @param significance The multiple to which you want to round (default = 1)
+#' @param mode For negative numbers, controls rounding direction:
+#'             0 or omitted = round toward zero (toward positive infinity)
+#'             non-zero = round away from zero (toward negative infinity)
+#' @return The rounded number
 #' @examples
-#' ceilingSingleVarOne <- excel_ceiling(2.3456, 3)
-#' ceilingSingleVarTwo <- excel_ceiling(2345.6, 2)
-#' ceilingSingleVarOneNeg <- excel_ceiling(-2.3456, 3)
-#' ceilingSingleVarTwoNeg <- excel_ceiling(-2345.6, 2)
+#' excel__xlfn.floor.math(4.3)           # Returns 4
+#' excel__xlfn.floor.math(4.3, 2)        # Returns 4
+#' excel__xlfn.floor.math(-4.3)          # Returns -5
+#' excel__xlfn.floor.math(-4.3, 1, 1)    # Returns -4
+#' excel__xlfn.floor.math(-4.3, 2)       # Returns -6
+#' excel__xlfn.floor.math(-4.3, 2, 1)    # Returns -4
 #'
-#' ceilingListleVars <- excel_ceiling(c(2.3456, 2345, -2.345,-2093.987,-223,0), 3)
-#' @export
-excel_ceiling <- function(x, n) {
+excel__xlfn.floor.math <- function(number, significance = 1, mode = 0) {
+  # Handle NA values
+  if (is.na(number))
+    return(NA)
 
-  pow <- floor( log10( abs(x) ) ) + 1 - n
-  y <- ceiling(x / 10 ^ pow) * 10^pow
-  # handle the x = 0 case
-  y[x==0] <- 0
-  return (y)
+  if (is.na(significance))
+    significance <- 1
+
+  if (is.na(mode))
+    mode <- 0
+
+  # If significance is 0, return 0
+  if (!significance)
+    return(0)
+
+  # Use absolute value of significance (unlike FLOOR)
+  significance <- abs(significance)
+
+  # Handle positive numbers - always round down
+  if (number >= 0) {
+    result <- floor(number / significance) * significance
+  } else {
+    # Handle negative numbers based on mode
+    if (!mode) {
+      # Mode 0: Round toward zero (up for negative numbers)
+      # This means we use ceiling on the absolute value
+      result <- -ceiling(abs(number) / significance) * significance
+    }
+    else {
+      # Mode non-zero: Round away from zero (down for negative numbers)
+      # This means we use floor on the absolute value
+      result <- -floor(abs(number) / significance) * significance
+    }
+  }
+
+  return(result)
+}
+
+#' Excel CEILING Function
+#'
+#' Rounds a number up to the nearest multiple of significance.
+#' This function replicates the behavior of Excel's CEILING function.
+#'
+#' @param number The numeric value to round up
+#' @param significance The multiple to which you want to round
+#' @return The rounded number
+#' @examples
+#' excel_ceiling(2.5, 1)      # Returns 3
+#' excel_ceiling(26.75, 0.1)  # Returns 26.8
+#' excel_ceiling(-2.5, -2)    # Returns -4
+#' excel_ceiling(1.2, 1)      # Returns 2
+#'
+excel_ceiling <- function(number, significance) {
+  # Handle NA values
+  if (is.na(number) || is.na(significance)) {
+    return(NA)
+  }
+
+  # If significance is 0, return 0
+  if (significance == 0) {
+    return(0)
+  }
+
+  return(ceiling(number / significance) * significance)
+}
+
+#' Excel CEILING.MATH Function
+#'
+#' Rounds a number up to the nearest integer or to the nearest multiple of significance.
+#' Unlike CEILING, CEILING.MATH allows you to control the rounding direction for negative numbers.
+#'
+#' @param number The numeric value to round up
+#' @param significance The multiple to which you want to round (default = 1)
+#' @param mode For negative numbers, controls rounding direction:
+#'             0 or omitted = round toward zero (away from infinity)
+#'             non-zero = round away from zero (toward negative infinity)
+#' @return The rounded number
+#' @examples
+#' excel__xlfn.ceiling.math(4.3)           # Returns 5
+#' excel__xlfn.ceiling.math(4.3, 2)        # Returns 6
+#' excel__xlfn.ceiling.math(-4.3)          # Returns -4
+#' excel__xlfn.ceiling.math(-4.3, 1, 1)    # Returns -5
+#' excel__xlfn.ceiling.math(-4.3, 2)       # Returns -4
+#' excel__xlfn.ceiling.math(-4.3, 2, 1)    # Returns -6
+#'
+excel__xlfn.ceiling.math <- function(number, significance = 1, mode = 0) {
+  # Handle NA values
+  if (is.na(number))
+    return(NA)
+
+  if (is.na(significance))
+    significance <- 1
+
+  if (is.na(mode))
+    mode <- 0
+
+  # If significance is 0, return 0
+  if (!significance)
+    return(0)
+
+  # Use absolute value of significance (unlike CEILING)
+  significance <- abs(significance)
+
+  # Handle positive numbers - always round up
+  if (number >= 0) {
+    result <- ceiling(number / significance) * significance
+  }
+  else {
+    # Handle negative numbers based on mode
+    if (!mode) {
+      # Mode 0: Round toward zero (up for negative numbers)
+      # This means we use floor on the absolute value
+      result <- -floor(abs(number) / significance) * significance
+    }
+    else {
+      # Mode non-zero: Round away from zero (down for negative numbers)
+      # This means we use ceiling on the absolute value
+      result <- -ceiling(abs(number) / significance) * significance
+    }
+  }
+
+  return(result)
 }
 
 #' Convert MMULT(A, B)

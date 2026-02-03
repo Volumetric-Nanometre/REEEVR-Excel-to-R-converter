@@ -42,7 +42,6 @@ generic_var <- function(x, na.rm = FALSE, sample  = TRUE) {
 
 }
 
-
 #' Convert MEDIAN(...)
 #'
 #' @param ... list
@@ -259,3 +258,106 @@ excel__xlfn.var.p <- function(...) {
 
 }
 
+#' Convert MAX
+#'
+#' @param ... list of values
+#' @return returns max value
+#'
+#' @examples
+#' maxSingleVars <- excel_max(0, 3, 5, 2.5, -10)
+#' maxListVars <- excel_max(list(2, 3, 5, 2.5, -10))
+#' maxMultiListVars <- excel_max(list(c(2, 3, 5), c(2.5 ,-10, 2), c(4, 3.3, 9)))
+#'
+#' @export
+excel_max <- function(...) {
+
+  args = list(...)
+  if(length(args) == 1)
+    return (apply(do.call(rbind, ...), 2, max, sample = FALSE))
+
+  else
+    return (excel_max(args))
+
+}
+
+#' Convert MIN
+#'
+#' @param ... list of values
+#' @return returns min value
+#'
+#' @examples
+#' minSingleVars <- excel_min(0, 3, 5, 2.5, -10)
+#' minListVars <- excel_min(list(2, 3, 5, 2.5, -10))
+#' minMultiListVars <- excel_min(list(c(2, 3, 5), c(2.5 ,-10, 2), c(4, 3.3, 9)))
+#'
+#' @export
+excel_min <- function(...) {
+
+  args = list(...)
+  if(length(args) == 1)
+    return (apply(do.call(rbind, ...), 2, min, sample = FALSE))
+
+  else
+    return (excel_min(args))
+
+}
+
+#' Convert QUARTILE
+#'
+#' @param range list of values
+#' @param quart list of values
+#' @return returns the quartile determined by quart
+#'
+#' @examples
+#' quartileListVars <- excel_quartile(list(2, 3, 5, 2.5, -10),1)
+#' quartileMultiListVars <- excel_quartile(list(c(2, 3, 5), c(2.5 ,-10, 2), c(4, 3.3, 9)),1)
+#'
+#' @export
+excel_quartile <- function(range, quart) {
+
+  if(quart==0)
+    return(excel_min(range))
+
+  else if(quart==1)
+      return (apply(do.call(rbind, range), 2, quantile, probs = 0.25))
+
+  else if(quart==2)
+    return(excel_median(range))
+
+  else if(quart==3)
+      return (apply(do.call(rbind, range), 2, quantile, probs = 0.75))
+
+  else
+    return(excel_max(range))
+
+}
+
+#' Convert QUARTILE.INC
+#'
+#' @param range list of values
+#' @param quart list of values
+#' @return returns the quartile determined by quart, with [0,1]
+#'
+#' @examples
+#' quartile.incListVars <- excel__xlfn.quartile.inc(list(2, 3, 5, 2.5, -10),1)
+#' quartile.incMultiListVars <- excel__xlfn.quartile.inc(list(c(2, 3, 5), c(2.5 ,-10, 2), c(4, 3.3, 9)),1)
+#'
+#' @export
+excel__xlfn.quartile.inc <- function(range, quart) {
+
+  if(quart==0)
+    return(excel_min(range))
+
+  else if(quart==1)
+    return (apply(do.call(rbind, range), 2, quantile, probs = 0.25))
+
+  else if(quart==2)
+    return(excel_median(range))
+
+  else if(quart==3)
+    return (apply(do.call(rbind, range), 2, quantile, probs = 0.75))
+
+  else
+    return(excel_max(range))
+
+}
