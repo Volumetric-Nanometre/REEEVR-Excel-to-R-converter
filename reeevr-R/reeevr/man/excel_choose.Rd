@@ -15,7 +15,7 @@ excel_choose(n, ...)
 The nth input
 }
 \description{
-Take N inputs and returnt he nth result.
+Take N inputs and return the nth result.
 }
 \examples{
 sixth <- excel_choose(6, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
