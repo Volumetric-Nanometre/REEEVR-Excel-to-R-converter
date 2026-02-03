@@ -135,3 +135,8 @@ test-workbooks-tocheck/
 reeevr-R/reeevr.Rcheck/
 reeevr-R/*.zip
 reeevr-R/*.tar.gz
+.Rproj.user
+.idea
+.RData
+.Rhistory
+~$*
