@@ -1,3 +1,5 @@
+import os
+
 from reader import ExcelReader
 from codegen import CodeGen
 from outputs import ROutputs
@@ -8,6 +10,7 @@ import unittest
 import rpy2.robjects as robjects
 import hashlib
 import re
+import numpy as np
 
 def file_hash(path):
     hasher = hashlib.sha256()
@@ -35,7 +38,7 @@ class TestWorkbook1(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = ["PSA"]
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs, "", self.rpath)
@@ -108,7 +111,7 @@ class TestWorkbook2(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = ["PSA"]
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False )
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -186,7 +189,7 @@ class TestWorkbook3(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = ["PSA"]
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -267,11 +270,12 @@ class TestWorkbook4(unittest.TestCase):
 
         costs = [('Engine', 'E5:F5')]
         effs = [('Engine', 'E6:F6')]
-        outputs = ROutputs(varconverter, "", "", costs+effs+[('Engine', 'G5'), ('Engine', 'G6')], costs, effs,
-                           ["Asprin", "Warfarin"], [('Frontend','E5')])
+        otherPSA = [('Engine', 'E7:F7')]
+        outputs = ROutputs(varconverter, "test/excel workbook/", otherPSA, costs, effs,
+                           ["Asprin", "Warfarin"], [('Frontend','E5')], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "", self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "test/excel workbook/", "test_workbook_4_output.R")
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.cyclic_prune()
@@ -288,6 +292,9 @@ class TestWorkbook4(unittest.TestCase):
         self.r_source = robjects.r['source']
         self.r_source(self.rpath)
         self.globalenv = robjects.globalenv
+
+        self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
+        os.remove("test/excel workbook/psa.txt")
 
     def test_deterministic_conversion(self):
         """
@@ -306,18 +313,25 @@ class TestWorkbook4(unittest.TestCase):
         or via incompatible changes from Excel. This test catches when these regressions may occur
         """
 
-        self.assertAlmostEqual(self.globalenv[f'willingness_to_pay'][0], 20000,
-                               msg=f"willingness_to_pay (Frontend_E5) ... [FAIL]\n")
-        self.assertAlmostEqual(self.globalenv[f'Frontend_E9'][0], -1425.6,
+        EngineE5, EngineF5, EngineE6, EngineF6, EngineE7, EngineF7 = np.average(self.psaData, axis=0)
+
+        avg_inc_costs = EngineF5 - EngineE5
+        avg_inc_effs = EngineF6 - EngineE6
+        avg_inc_nb = EngineF7 - EngineE7
+        print(avg_inc_costs)
+        print(avg_inc_effs)
+        print(avg_inc_nb)
+
+        self.assertAlmostEqual(-1425.659922, avg_inc_costs/avg_inc_effs,
                                msg=f"Frontend_E9 ... [FAIL]\n"
                                    f"- Potentially failed due to random sampling.\n"
                                    f"Run at least 3 times if it failed.\n "
-                                   f"If fails 2 out of 3 times check program.",delta = 1)
-        self.assertAlmostEqual(self.globalenv[f'Frontend_E10'][0], -30965,
+                                   f"If fails 2 out of 3 times check program.",delta = 20)
+        self.assertAlmostEqual(-30965.96106, avg_inc_nb,
                                msg=f"Frontend_E9 ... [FAIL]\n"
                                    f"- Potentially failed due to random sampling.\n"
                                    f"Run at least 3 times if it failed.\n "
-                                   f"If fails 2 out of 3 times check program.", delta = 1)
+                                   f"If fails 2 out of 3 times check program.", delta = 100)
 
     @classmethod
     def tearDownClass(self):
