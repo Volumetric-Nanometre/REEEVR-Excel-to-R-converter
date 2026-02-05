@@ -83,3 +83,5 @@ generic_list_or_rand_input <- function(arrayinput,funclist,funcrand){
 
   return (funcrand(arrayinput))
 }
+
+

@@ -9,9 +9,6 @@ screen_dump(...)
 \arguments{
 \item{...}{the N inputs}
 }
-\value{
-zero (0) for success, non-zero for failure
-}
 \description{
 Take N inputs and dumps them to screen
 }
