@@ -27,7 +27,7 @@ class SimpleFunctionTests(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = []
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -89,7 +89,7 @@ class AdaptiveFunctionTests(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = []
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -149,7 +149,7 @@ class DistFunctionTests(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = []
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -209,7 +209,7 @@ class ArrayValidationTests(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = []
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
@@ -275,7 +275,7 @@ class REEEVRFunctionTests(unittest.TestCase):
         outputLang = 'R'
         ignoredsheets = []
         varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
-        outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
+        outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
