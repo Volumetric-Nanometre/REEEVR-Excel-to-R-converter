@@ -7,6 +7,7 @@ import copy
 import unittest
 import rpy2.robjects as robjects
 import hashlib
+import re
 
 def file_hash(path):
     hasher = hashlib.sha256()
@@ -37,7 +38,7 @@ class TestWorkbook1(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs, "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -110,7 +111,7 @@ class TestWorkbook2(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -188,7 +189,7 @@ class TestWorkbook3(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -245,6 +246,82 @@ class TestWorkbook3(unittest.TestCase):
     def tearDownClass(self):
         robjects.globalenv.clear()
 
+class TestWorkbook4(unittest.TestCase):
+    """
+
+    """
+    @classmethod
+    def setUpClass(self):
+        """
+        Test suite explicity loads an Excel file containing all functions and test cases.
+        File is then converted using the standard conversion process (minus culling).
+        File is then ran in R using rpy2, this generates an active R environment.
+        We then interrogate the R environment and compare to the expected value stored in Excel.
+        """
+        self.excelpath = "test/excel workbook/test_workbook_4.xlsm"
+        self.rpath = "test/excel workbook/test_workbook_4_output.R"
+        workbook = openpyxl.load_workbook(self.excelpath)
+        outputLang = 'R'
+        ignoredsheets = ["PSA"]
+        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+
+        costs = [('Engine', 'E5:F5')]
+        effs = [('Engine', 'E6:F6')]
+        outputs = ROutputs(varconverter, "", "", costs+effs+[('Engine', 'G5'), ('Engine', 'G6')], costs, effs,
+                           ["Asprin", "Warfarin"], [('Frontend','E5')])
+        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader.read()
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "", self.rpath)
+        codegen.second_pass()
+        codegen.order_code_snippets()
+        codegen.cyclic_prune()
+        codegen.generate_code(writeoutputs=True)
+
+        with open(self.rpath,"r+") as f:
+            file_data = f.read()
+            file_data = re.sub("numberOfRuns = 1000", "numberOfRuns = 100000", file_data)
+            file_data = re.sub("converter_validate = TRUE", "converter_validate = FALSE", file_data)
+            f.seek(0)
+            f.write(file_data)
+            f.truncate()
+
+        self.r_source = robjects.r['source']
+        self.r_source(self.rpath)
+        self.globalenv = robjects.globalenv
+
+    def test_deterministic_conversion(self):
+        """
+        Given no changes to the Excel file, returned files should always be the same.
+        We can test this using a cryptographic hash. If the contents of the files are different then the conversion
+        has not generated the same file.
+        """
+
+        hashOriginal = file_hash("test/excel workbook/test_workbook_4.R")
+        hashGenerated = file_hash(self.rpath)
+        self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
+
+    def test_programatic_regression(self):
+        """
+        While the converted file may be correct, the individual functions called may change definition when called in R
+        or via incompatible changes from Excel. This test catches when these regressions may occur
+        """
+
+        self.assertAlmostEqual(self.globalenv[f'willingness_to_pay'][0], 20000,
+                               msg=f"willingness_to_pay (Frontend_E5) ... [FAIL]\n")
+        self.assertAlmostEqual(self.globalenv[f'Frontend_E9'][0], -1425.6,
+                               msg=f"Frontend_E9 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.",delta = 1)
+        self.assertAlmostEqual(self.globalenv[f'Frontend_E10'][0], -30965,
+                               msg=f"Frontend_E9 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta = 1)
+
+    @classmethod
+    def tearDownClass(self):
+        robjects.globalenv.clear()
 
 if __name__ == '__main__':
     unittest.main()

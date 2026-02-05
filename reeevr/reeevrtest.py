@@ -30,7 +30,7 @@ class SimpleFunctionTests(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -92,7 +92,7 @@ class AdaptiveFunctionTests(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -152,7 +152,7 @@ class DistFunctionTests(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -212,7 +212,7 @@ class ArrayValidationTests(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -278,7 +278,7 @@ class REEEVRFunctionTests(unittest.TestCase):
         outputs = ROutputs(varconverter, "", "", [], [], [], [], [])
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , codefile=self.rpath)
+        codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.culledcode = copy.deepcopy(codegen.orderedcode)
@@ -309,6 +309,8 @@ class REEEVRFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+
+
 
 
 
