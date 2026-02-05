@@ -2,16 +2,16 @@
 
 class ROutputs:
 
-    def __init__(self,converter,print,file,df,costs,effs,treatments,willingnesstopay):
+    def __init__(self, converter, folder, PSAoutputs, costs, effs, treatments, willingnesstopay, BCEA = False):
 
         self.varconverter = converter
-        self.printOutputs = self.expand_outputs(print)
-        self.fileOutputs = self.expand_outputs(file)
-        self.dataframeOutputs = self.expand_outputs(df)
+        self.outputFolder = folder
+        self.PSAOutputs = self.expand_outputs(PSAoutputs)
         self.costs = self.expand_outputs(costs)
         self.effectiveness = self.expand_outputs(effs)
         self.treatments = treatments
         self.willingnesstopay = self.expand_outputs(willingnesstopay)
+        self.BCEA = BCEA
 
     def expand_outputs(self,outputs):
 
@@ -31,53 +31,34 @@ class ROutputs:
 
     def output_cells(self):
 
-        outputCells = list(set(self.dataframeOutputs + self.fileOutputs + self.dataframeOutputs + self.willingnesstopay))
+        outputCells = list(set(self.PSAOutputs + self.costs + self.effectiveness + self.willingnesstopay))
         return outputCells
     def add_output_code(self):
 
         fullOutputCode = ""
 
-        fullOutputCode += self.create_dataframe()
         fullOutputCode += self.file_output()
-        fullOutputCode += self.print_output()
-        fullOutputCode += self.bcea()
+        if(self.BCEA):
+            fullOutputCode += self.bcea()
 
 
         return fullOutputCode
-    def print_output(self):
-
-        printOutputCode = ""
-
-        for val in self.printOutputs:
-
-            printOutputCode += f"print({val})\n"
-
-        return printOutputCode
 
     def file_output(self):
 
-        fileOutputCode = ""
-        for val in self.fileOutputs:
+        outputList = self.costs + self.effectiveness + self.PSAOutputs
+        output = ",".join([f'{val}' for val in outputList])
+        if self.outputFolder == "":
+            fileOutputCode = f"psafile <- 'psa.txt'\n"
+        else:
+            fileOutputCode = f"psafile <- '{self.outputFolder}/psa.txt'\n"
 
-            fileOutputCode += f'cat({val}, file = "{val}-output-file.txt")\n'
-
+        fileOutputCode += f"PSA_output <- PSA_output(psafile, dec = '.',{output})\n"
         return fileOutputCode
-
-    def create_dataframe(self):
-        """
-        Use the R BCEA_dataframe function to generate a dataframe
-        """
-        dataframe_code = ",".join(self.dataframeOutputs)
-
-        dataframe_code = f"BCEAdf = BCEA_dataframe({dataframe_code})\n"
-        dataframe_code += "print(BCEAdf)\n"
-
-
-        return dataframe_code
 
     def bcea(self):
         """
-        Use the R BCEA_dataframe function to generate a dataframe
+        Use the R BCEA_all_output_loop function to generate BCEA outputs
         """
         bcea_code = ""
 

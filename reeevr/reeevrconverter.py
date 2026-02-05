@@ -76,15 +76,17 @@ class GUI(QMainWindow):
                                           "}")
 
         path = self.ui.FileName.text()
+        folder = self.ui.OutputFolderFileName.text()
         testOutput = self.ui.OutputcellsLedit.text()
         ignoredsheets = self.ui.IgnoredSheetsLedit.text()
         costs = self.ui.CostsCellsLEdit.text()
         effectiveness = self.ui.EffectivenesCellsLEdit.text()
         treatments = self.ui.TreatmentNamesLEdit.text()
         willingnesstopay = self.ui.WillingnessToPayLEdit.text()
+        BCEA = self.ui.BCEACheckBox.isChecked()
 
         convert = MainLoop(gui=True, progressbar=self.ui.progressBar, guitextbrowser=self.ui.textEdit)
-        convert.set_vals(path,testOutput,ignoredsheets,costs,effectiveness,treatments,willingnesstopay)
+        convert.set_vals(path,folder, testOutput, ignoredsheets, costs, effectiveness, treatments, willingnesstopay,BCEA)
         convert.run()
 
 if __name__ == '__main__':

@@ -4,9 +4,8 @@ from outputs import ROutputs
 from variable import VariableConverter
 import openpyxl
 import os
-
 import io
-
+import traceback
 def print_to_string(*args, **kwargs):
     output = io.StringIO()
     print(*args, file=output, **kwargs)
@@ -18,6 +17,7 @@ class MainLoop:
 
     def __init__(self, gui=False, progressbar = None, guitextbrowser = None):
         self.path = ""
+        self.folder = ""
         self.testOutput = []
         self.ignoredsheets = []
         self.costs = []
@@ -30,8 +30,12 @@ class MainLoop:
         self.progressbar = progressbar
         self.guitextbrowser=guitextbrowser
         self.text = ""
-    def set_vals(self, path, testoutput, ignoredsheets, costs, effectiveness, treatments, willingtopay):
+        self.BCEA = False
+    def set_vals(self, path, folder, testoutput, ignoredsheets, costs, effectiveness, treatments, willingtopay, BCEA):
         self.path = path
+        self.folder = folder
+        print(self.folder)
+        self.BCEA = BCEA
 
         self.testOutput = testoutput.replace("!", ",")
         self.testOutput = self.testOutput.split(",")
@@ -106,7 +110,7 @@ class MainLoop:
             self.update_progress()
 
             self.output("Initialise outputs ... ",end="")
-            outputs = ROutputs(varconverter, "", "", self.testOutput, self.costs, self.effectiveness, self.treatments, self.willingnesstopay)
+            outputs = ROutputs(varconverter,  self.folder, self.testOutput, self.costs, self.effectiveness, self.treatments, self.willingnesstopay, self.BCEA)
             self.output("[SUCCESS]")
             self.update_progress()
 
@@ -140,7 +144,8 @@ class MainLoop:
             self.output("[SUCCESS]")
             self.update_progress()
         except:
-            self.output("[FAILED]")
+            self.output("[FAILED]\n")
+            self.output(traceback.print_exc())
             self.completionstate = 0
             self.progressbar.setStyleSheet("QProgressBar"
                                              "{"
