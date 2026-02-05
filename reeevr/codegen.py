@@ -11,14 +11,15 @@ class CodeGen:
     4. outputs final code file
     """
 
-    def __init__(self, varconverter, unorderedcode, outputs,codefile):
+    def __init__(self, varconverter, unorderedcode, outputs, folder, filename):
         self.unorderedcode = unorderedcode
         self.orderedcode = {}
         self.culledcode = {}
         self.unusedcode = {}
         self.outputs = outputs
         self.dependantvars = outputs.output_cells()
-        self.codefile = codefile
+        self.folder = folder
+        self.file = filename
         self.varconverter = varconverter
 
 
@@ -196,7 +197,13 @@ class CodeGen:
         """
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}
         """
-        with open(self.codefile,"w") as f:
+        if self.folder == "":
+            file = f"{self.file}"
+        else:
+            file = f"{self.folder}/{self.file}"
+
+
+        with open(file,"w") as f:
             f.write(f"{self.mandatoryCode}")
 
             for item in self.culledcode.items():

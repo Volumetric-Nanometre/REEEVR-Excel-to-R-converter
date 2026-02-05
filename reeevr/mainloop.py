@@ -18,6 +18,7 @@ class MainLoop:
     def __init__(self, gui=False, progressbar = None, guitextbrowser = None):
         self.path = ""
         self.folder = ""
+        self.file = ""
         self.testOutput = []
         self.ignoredsheets = []
         self.costs = []
@@ -36,6 +37,10 @@ class MainLoop:
         self.folder = folder
         print(self.folder)
         self.BCEA = BCEA
+
+        self.file = os.path.basename(path)
+        self.file = os.path.splitext(self.file)[0]
+        self.file = self.file + ".R"
 
         self.testOutput = testoutput.replace("!", ",")
         self.testOutput = self.testOutput.split(",")
@@ -125,7 +130,7 @@ class MainLoop:
             self.update_progress()
 
             self.output("Generate unordered code ... ",end="")
-            b = CodeGen(varconverter, a.unorderedcode, outputs, codefile="test_output.R")
+            b = CodeGen(varconverter, a.unorderedcode, outputs, self.folder, self.file)
             b.second_pass()
             self.output("[SUCCESS]")
             self.update_progress()
