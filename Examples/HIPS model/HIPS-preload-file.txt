@@ -1,0 +1,8 @@
+File:
+Output Folder: 
+Output Cells: 
+Ignored Sheets: DSA, PSA, PSA results, DSA results
+Total costs: 'Summary results'!$F$6:$F$9
+Total QALY: 'Summary results'!$G$6:$G$9
+Treatment Names: Cemented, Uncemented, Hybrid, Reverse Hybrid
+WTP Threshold: 'Setup and run'!$D$14
