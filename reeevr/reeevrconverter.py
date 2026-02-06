@@ -1,4 +1,5 @@
 import sys
+import traceback
 
 from mainloop import MainLoop
 
@@ -6,7 +7,7 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
 from PyQt6 import QtGui
 from QtDesignerGUIFile import Ui_ExcelToRConverterGUI
-
+import traceback
 
 class GUI(QMainWindow):
     def __init__(self):
@@ -84,10 +85,13 @@ class GUI(QMainWindow):
         treatments = self.ui.TreatmentNamesLEdit.text()
         willingnesstopay = self.ui.WillingnessToPayLEdit.text()
         BCEA = self.ui.BCEACheckBox.isChecked()
-
-        convert = MainLoop(gui=True, progressbar=self.ui.progressBar, guitextbrowser=self.ui.textEdit)
-        convert.set_vals(path,folder, testOutput, ignoredsheets, costs, effectiveness, treatments, willingnesstopay,BCEA)
-        convert.run()
+        try:
+            convert = MainLoop(gui=True, progressbar=self.ui.progressBar, guitextbrowser=self.ui.textEdit)
+            convert.set_vals(path,folder, testOutput, ignoredsheets, costs, effectiveness, treatments, willingnesstopay,BCEA)
+            convert.run()
+        except:
+            with open("error-traceback.log", "a") as f:
+                traceback.print_tb(file=f)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
