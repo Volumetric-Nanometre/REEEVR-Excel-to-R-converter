@@ -94,6 +94,11 @@ class GUI(QMainWindow):
                 traceback.print_tb(file=f)
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    try:
+        import pyi_splash
+        app = QApplication(sys.argv)
+        pyi_splash.close()
+    except:
+        app = QApplication(sys.argv)
     GUI = GUI()
     sys.exit(app.exec())

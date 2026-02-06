@@ -13,6 +13,9 @@ class Ui_ExcelToRConverterGUI(object):
     def setupUi(self, ExcelToRConverterGUI):
         ExcelToRConverterGUI.setObjectName("ExcelToRConverterGUI")
         ExcelToRConverterGUI.resize(608, 525)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("C:\\Users\\mo14776\\PycharmProjects\\Excel-R-compiler\\reeevr\\logo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        ExcelToRConverterGUI.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(parent=ExcelToRConverterGUI)
         self.centralwidget.setObjectName("centralwidget")
         self.layoutWidget = QtWidgets.QWidget(parent=self.centralwidget)
@@ -147,7 +150,7 @@ class Ui_ExcelToRConverterGUI(object):
 
     def retranslateUi(self, ExcelToRConverterGUI):
         _translate = QtCore.QCoreApplication.translate
-        ExcelToRConverterGUI.setWindowTitle(_translate("ExcelToRConverterGUI", "MainWindow"))
+        ExcelToRConverterGUI.setWindowTitle(_translate("ExcelToRConverterGUI", "REEEVR: Excel-to-R converter"))
         self.InputFilenameLabel_3.setToolTip(_translate("ExcelToRConverterGUI", "Allows preloading of all inputs from correctly formatted preload file. "))
         self.InputFilenameLabel_3.setText(_translate("ExcelToRConverterGUI", "Preload Inputs File:"))
         self.PreloadInputsFile.setToolTip(_translate("ExcelToRConverterGUI", "Path to Excel workbook to be worked on"))
@@ -177,13 +180,3 @@ class Ui_ExcelToRConverterGUI(object):
         self.BCEACheckBoxLabel.setText(_translate("ExcelToRConverterGUI", "BCEA "))
         self.ConvertButton.setText(_translate("ExcelToRConverterGUI", "Convert"))
         self.CanceltoolButton.setText(_translate("ExcelToRConverterGUI", "..."))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    ExcelToRConverterGUI = QtWidgets.QMainWindow()
-    ui = Ui_ExcelToRConverterGUI()
-    ui.setupUi(ExcelToRConverterGUI)
-    ExcelToRConverterGUI.show()
-    sys.exit(app.exec())
