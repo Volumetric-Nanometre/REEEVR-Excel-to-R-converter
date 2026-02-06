@@ -1,3 +1,8 @@
+
+
+[![DOI](https://zenodo.org/badge/617394969.svg)](https://doi.org/10.5281/zenodo.18510283)
+
+
 # REEEVR: Excel-to-R converter
 
 ## Acknowledgements
