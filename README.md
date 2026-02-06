@@ -3,7 +3,7 @@
 ## Acknowledgements
 GitHub repository with code for project entitled "Reliable and Efficient Estimation of the Economic Value of medical Research (REEEVR)" funded by UK Medical Research Council grant MR/W029855/1.
 
-The file tokenizer.py is a modified version of the tokenizer from openpyxl version 3.1, and have been edited to correctly handle dynamic ranges. This file will be removed once openpyxl has been updated to correctly handle dynamic ranges. 
+The file tokenizer.py is a modified version of the tokenizer from openpyxl version 3.1, and has been edited to correctly handle dynamic ranges. This file will be removed once openpyxl has been updated to correctly handle dynamic ranges. 
 
 We utilise PyQt6 for the user interface, which requires the GPL-3.0 license. As such all code (other than tokenizer.py which is covered under openpyxl MIT license) is also covered under the GPL-3.0 license. 
 
@@ -29,3 +29,12 @@ Please raise issues using the Github issue tracker. These issues can be programm
 Obviously this being a public repository, anyone can fork and develop on their own, so long as they abide by the licensing terms.
 
 However, should you wish to contribute to this project, please generate a pull request and we will endeavour to work with you. Please note this is done on a voluntary basis by the maintainers.
+
+### Testing
+When contributing please run all code through the test suites in the test folder.
+In addition please add tests if required.
+
+### Compiling binaries
+We currently use pyinstaller to create the binaries. The command used is:
+`pyinstaller reeevrconverter.py -F --windowed --icon logo.png --hidden-import openpyxl.cell._writer -n REEEVR-Excel-to-R-converter --splash logo.png`
+
