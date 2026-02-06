@@ -32,8 +32,8 @@ class TestWorkbook1(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/test_workbook_1.xlsx"
-        self.rpath = "test/excel workbook/test_workbook_1_output.R"
+        self.excelpath = "excel workbook/test_workbook_1.xlsx"
+        self.rpath = "excel workbook/test_workbook_1_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["PSA"]
@@ -59,7 +59,7 @@ class TestWorkbook1(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/test_workbook_1.R")
+        hashOriginal = file_hash("excel workbook/test_workbook_1.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -91,7 +91,7 @@ class TestWorkbook1(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/test_workbook_1_output.R")
+        os.remove("excel workbook/test_workbook_1_output.R")
 
 
 class TestWorkbook2(unittest.TestCase):
@@ -106,8 +106,8 @@ class TestWorkbook2(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/test_workbook_2.xlsx"
-        self.rpath = "test/excel workbook/test_workbook_2_output.R"
+        self.excelpath = "excel workbook/test_workbook_2.xlsx"
+        self.rpath = "excel workbook/test_workbook_2_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["PSA"]
@@ -133,7 +133,7 @@ class TestWorkbook2(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/test_workbook_2.R")
+        hashOriginal = file_hash("excel workbook/test_workbook_2.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -171,7 +171,7 @@ class TestWorkbook2(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/test_workbook_2_output.R")
+        os.remove("excel workbook/test_workbook_2_output.R")
 
 class TestWorkbook3(unittest.TestCase):
     """
@@ -185,8 +185,8 @@ class TestWorkbook3(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/test_workbook_3.xlsx"
-        self.rpath = "test/excel workbook/test_workbook_3_output.R"
+        self.excelpath = "excel workbook/test_workbook_3.xlsx"
+        self.rpath = "excel workbook/test_workbook_3_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["PSA"]
@@ -212,7 +212,7 @@ class TestWorkbook3(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/test_workbook_3.R")
+        hashOriginal = file_hash("excel workbook/test_workbook_3.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -250,7 +250,7 @@ class TestWorkbook3(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/test_workbook_3_output.R")
+        os.remove("excel workbook/test_workbook_3_output.R")
 
 class TestWorkbook4(unittest.TestCase):
     """
@@ -264,8 +264,8 @@ class TestWorkbook4(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/test_workbook_4.xlsm"
-        self.rpath = "test/excel workbook/test_workbook_4_output.R"
+        self.excelpath = "excel workbook/test_workbook_4.xlsm"
+        self.rpath = "excel workbook/test_workbook_4_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["PSA"]
@@ -274,11 +274,11 @@ class TestWorkbook4(unittest.TestCase):
         costs = [('Engine', 'E5:F5')]
         effs = [('Engine', 'E6:F6')]
         otherPSA = [('Engine', 'E7:F7')]
-        outputs = ROutputs(varconverter, "test/excel workbook/", otherPSA, costs, effs,
+        outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Asprin", "Warfarin"], [('Frontend','E5')], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "test/excel workbook/", "test_workbook_4_output.R")
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "test_workbook_4_output.R")
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.cyclic_prune()
@@ -296,8 +296,7 @@ class TestWorkbook4(unittest.TestCase):
         self.r_source(self.rpath)
         self.globalenv = robjects.globalenv
 
-        self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
-        os.remove("test/excel workbook/psa.txt")
+        self.psaData = np.loadtxt("excel workbook/psa.txt", skiprows=1)
 
     def test_deterministic_conversion(self):
         """
@@ -306,7 +305,7 @@ class TestWorkbook4(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/test_workbook_4.R")
+        hashOriginal = file_hash("excel workbook/test_workbook_4.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -340,7 +339,8 @@ class TestWorkbook4(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/test_workbook_4_output.R")
+        os.remove("excel workbook/psa.txt")
+        os.remove("excel workbook/test_workbook_4_output.R")
 
 
 class TestTwoStateMarkovV2(unittest.TestCase):
@@ -355,8 +355,8 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/Two states Markov model_v0.2.xlsm"
-        self.rpath = "test/excel workbook/Two states Markov model_v0.2_output.R"
+        self.excelpath = "excel workbook/Two states Markov model_v0.2.xlsm"
+        self.rpath = "excel workbook/Two states Markov model_v0.2_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["PSA"]
@@ -365,11 +365,11 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         costs = [('Results', 'F12:F13')]
         effs = [('Results', 'G12:G13')]
         otherPSA = [('Results', 'H12:H13')]
-        outputs = ROutputs(varconverter, "test/excel workbook/", otherPSA, costs, effs,
+        outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Drug A", "Drug B"], [('Model settings','N13')], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "test/excel workbook/", "Two states Markov model_v0.2_output.R")
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "Two states Markov model_v0.2_output.R")
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.cyclic_prune()
@@ -387,7 +387,7 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         self.r_source(self.rpath)
         self.globalenv = robjects.globalenv
 
-        self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
+        self.psaData = np.loadtxt("excel workbook/psa.txt", skiprows=1)
 
 
     def test_deterministic_conversion(self):
@@ -397,7 +397,7 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/Two states Markov model_v0.2.R")
+        hashOriginal = file_hash("excel workbook/Two states Markov model_v0.2.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -449,8 +449,8 @@ class TestTwoStateMarkovV2(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/psa.txt")
-        os.remove("test/excel workbook/Two states Markov model_v0.2_output.R")
+        os.remove("excel workbook/psa.txt")
+        os.remove("excel workbook/Two states Markov model_v0.2_output.R")
 
 class TestHIPSdemo(unittest.TestCase):
     """
@@ -464,8 +464,8 @@ class TestHIPSdemo(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excel workbook/HIPS Markov model demo.xlsm"
-        self.rpath = "test/excel workbook/HIPS Markov model demo_output.R"
+        self.excelpath = "excel workbook/HIPS Markov model demo.xlsm"
+        self.rpath = "excel workbook/HIPS Markov model demo_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = ["DSA results", "PSA results"]
@@ -474,11 +474,11 @@ class TestHIPSdemo(unittest.TestCase):
         costs = [('Summary results', 'D6:D9')]
         effs = [('Summary results', 'E6:E9')]
         otherPSA = []
-        outputs = ROutputs(varconverter, "test/excel workbook/", otherPSA, costs, effs,
+        outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Cemented", "Uncemented", "Hybrid", "Reverse Hybrid"], [('Setup and run','D14')], BCEA=False)
         reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
         reader.read()
-        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "test/excel workbook/", "HIPS Markov model demo_output.R")
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "HIPS Markov model demo_output.R")
         codegen.second_pass()
         codegen.order_code_snippets()
         codegen.cyclic_prune()
@@ -496,7 +496,7 @@ class TestHIPSdemo(unittest.TestCase):
         self.r_source(self.rpath)
         self.globalenv = robjects.globalenv
 
-        self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
+        self.psaData = np.loadtxt("excel workbook/psa.txt", skiprows=1)
 
     def test_deterministic_conversion(self):
         """
@@ -505,7 +505,7 @@ class TestHIPSdemo(unittest.TestCase):
         has not generated the same file.
         """
 
-        hashOriginal = file_hash("test/excel workbook/HIPS Markov model demo.R")
+        hashOriginal = file_hash("excel workbook/HIPS Markov model demo.R")
         hashGenerated = file_hash(self.rpath)
         self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
 
@@ -570,8 +570,8 @@ class TestHIPSdemo(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excel workbook/psa.txt")
-        os.remove("test/excel workbook/HIPS Markov model demo_output.R")
+        os.remove("excel workbook/psa.txt")
+        os.remove("excel workbook/HIPS Markov model demo_output.R")
 
 
 if __name__ == '__main__':

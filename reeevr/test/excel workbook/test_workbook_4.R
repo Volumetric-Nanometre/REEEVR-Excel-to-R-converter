@@ -234,5 +234,5 @@ Engine_E6 = Inputparameters_E6 * Inputparameters_E16 + Inputparameters_E4 * Inpu
 Engine_F6 = Inputparameters_E7 * Inputparameters_E16 + Inputparameters_E5 * Inputparameters_E15 + ( 1 - Inputparameters_E7 - Inputparameters_E5 - Inputparameters_E9 ) * Inputparameters_E17 + Inputparameters_E9 * Inputparameters_E18
 Engine_E7 = Engine_E6 * willingness_to_pay - Engine_E5
 Engine_F7 = Engine_F6 * willingness_to_pay - Engine_F5
-psafile <- 'test/excel workbook//psa.txt'
+psafile <- 'excel workbook//psa.txt'
 PSA_output <- PSA_output(psafile, dec = '.',Engine_E5,Engine_F5,Engine_E6,Engine_F6,Engine_E7,Engine_F7)

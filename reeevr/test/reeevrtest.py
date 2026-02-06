@@ -21,8 +21,8 @@ class SimpleFunctionTests(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excelunit/simple-tests.xlsx"
-        self.rpath = "test/excelunit/simple-test-output.R"
+        self.excelpath = "excelunit/simple-tests.xlsx"
+        self.rpath = "excelunit/simple-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = []
@@ -63,7 +63,7 @@ class SimpleFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excelunit/simple-test-output.R")
+        os.remove("excelunit/simple-test-output.R")
 
 
 class AdaptiveFunctionTests(unittest.TestCase):
@@ -85,8 +85,8 @@ class AdaptiveFunctionTests(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excelunit/adaptive-tests.xlsx"
-        self.rpath = "test/excelunit/adaptive-test-output.R"
+        self.excelpath = "excelunit/adaptive-tests.xlsx"
+        self.rpath = "excelunit/adaptive-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = []
@@ -125,7 +125,7 @@ class AdaptiveFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excelunit/adaptive-test-output.R")
+        os.remove("excelunit/adaptive-test-output.R")
 
 
 class DistFunctionTests(unittest.TestCase):
@@ -147,8 +147,8 @@ class DistFunctionTests(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excelunit/reeevr-dist-tests.xlsx"
-        self.rpath = "test/excelunit/reeevr-dist-tests-output.R"
+        self.excelpath = "excelunit/reeevr-dist-tests.xlsx"
+        self.rpath = "excelunit/reeevr-dist-tests-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = []
@@ -187,7 +187,7 @@ class DistFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excelunit/reeevr-dist-tests-output.R")
+        os.remove("excelunit/reeevr-dist-tests-output.R")
 
 class ArrayValidationTests(unittest.TestCase):
     """
@@ -208,8 +208,8 @@ class ArrayValidationTests(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excelunit/array-validation-tests.xlsx"
-        self.rpath = "test/excelunit/array-validation-tests-output.R"
+        self.excelpath = "excelunit/array-validation-tests.xlsx"
+        self.rpath = "excelunit/array-validation-tests-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = []
@@ -254,7 +254,7 @@ class ArrayValidationTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excelunit/array-validation-tests-output.R")
+        os.remove("excelunit/array-validation-tests-output.R")
 
 class REEEVRFunctionTests(unittest.TestCase):
     """
@@ -275,8 +275,8 @@ class REEEVRFunctionTests(unittest.TestCase):
         File is then ran in R using rpy2, this generates an active R environment.
         We then interrogate the R environment and compare to the expected value stored in Excel.
         """
-        self.excelpath = "test/excelunit/reeevr-tests.xlsx"
-        self.rpath = "test/excelunit/reeevr-test-output.R"
+        self.excelpath = "excelunit/reeevr-tests.xlsx"
+        self.rpath = "excelunit/reeevr-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
         outputLang = 'R'
         ignoredsheets = []
@@ -315,7 +315,7 @@ class REEEVRFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
-        os.remove("test/excelunit/reeevr-test-output.R")
+        os.remove("excelunit/reeevr-test-output.R")
 
 
 

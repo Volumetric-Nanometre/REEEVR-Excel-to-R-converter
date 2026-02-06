@@ -356,5 +356,5 @@ Results_F12 = ModelengineA_M9 + ModelengineA_N9
 Results_H12 = Results_G12 * willingness_to_pay - Results_F12
 Results_F13 = ModelengineB_M9 + ModelengineB_N9
 Results_H13 = Results_G13 * willingness_to_pay - Results_F13
-psafile <- 'test/excel workbook//psa.txt'
+psafile <- 'excel workbook//psa.txt'
 PSA_output <- PSA_output(psafile, dec = '.',Results_F12,Results_F13,Results_G12,Results_G13,Results_H12,Results_H13)

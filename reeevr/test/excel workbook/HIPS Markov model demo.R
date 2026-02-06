@@ -2452,5 +2452,5 @@ Summaryresults_D8 = rngTotCostsHybr
 Summaryresults_E8 = rngTotQALYsHybr
 Summaryresults_D9 = rngTotCostsRevHybr
 Summaryresults_E9 = rngTotQALYsRevHybr
-psafile <- 'test/excel workbook//psa.txt'
+psafile <- 'excel workbook//psa.txt'
 PSA_output <- PSA_output(psafile, dec = '.',Summaryresults_D6,Summaryresults_D7,Summaryresults_D8,Summaryresults_D9,Summaryresults_E6,Summaryresults_E7,Summaryresults_E8,Summaryresults_E9)
