@@ -12,6 +12,6 @@ authors:
   
 title: "REEEVR: Excel-to-R conversion"
 version: 2026.1.0.0-beta
-doi: 
+doi: 10.5281/zenodo.18510284 
 date-released: 2026-02-06
 url: "https://github.com/Volumetric-Nanometre/REEEVR-Excel-to-R-converter"
