@@ -1,7 +1,7 @@
 Package: reeevr
 Type: Package
 Title: Contains the R functions required to convert Excel to R 
-Version: 0.1.0
+Version: 2026.1.0.0-beta
 Author: Michael O'Donnell
 Maintainer: Michael O'Donnell <michael.jon.odonnell@bristol.ac.uk>
 Description: Contains the functions required by the reeevr python package to 
