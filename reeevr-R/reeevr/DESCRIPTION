@@ -1,0 +1,15 @@
+Package: reeevr
+Type: Package
+Title: Contains the R functions required to convert Excel to R 
+Version: 0.1.0
+Author: Michael O'Donnell
+Maintainer: Michael O'Donnell <michael.jon.odonnell@bristol.ac.uk>
+Description: Contains the functions required by the reeevr python package to 
+    take a Health Economics model written in an Excel workbook, and return the
+    R code to allow the PSA, DSA, VOI and EVPI of the model to be calculated 
+    with increased speed. 
+License: Unknown
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.3
+Imports: BCEA
