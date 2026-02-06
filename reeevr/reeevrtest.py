@@ -6,7 +6,7 @@ import openpyxl
 import copy
 import unittest
 import rpy2.robjects as robjects
-
+import os
 
 class SimpleFunctionTests(unittest.TestCase):
     """
@@ -63,6 +63,8 @@ class SimpleFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excelunit/simple-test-output.R")
+
 
 class AdaptiveFunctionTests(unittest.TestCase):
     """
@@ -123,6 +125,8 @@ class AdaptiveFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excelunit/adaptive-test-output.R")
+
 
 class DistFunctionTests(unittest.TestCase):
     """
@@ -183,6 +187,7 @@ class DistFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excelunit/reeevr-dist-tests-output.R")
 
 class ArrayValidationTests(unittest.TestCase):
     """
@@ -249,6 +254,7 @@ class ArrayValidationTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excelunit/array-validation-tests-output.R")
 
 class REEEVRFunctionTests(unittest.TestCase):
     """
@@ -309,6 +315,8 @@ class REEEVRFunctionTests(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excelunit/reeevr-test-output.R")
+
 
 
 

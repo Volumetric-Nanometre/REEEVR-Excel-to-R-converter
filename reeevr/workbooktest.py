@@ -497,7 +497,6 @@ class TestHIPSdemo(unittest.TestCase):
         self.globalenv = robjects.globalenv
 
         self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
-        os.remove("test/excel workbook/psa.txt")
 
     def test_deterministic_conversion(self):
         """
@@ -571,6 +570,9 @@ class TestHIPSdemo(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excel workbook/psa.txt")
+        os.remove("test/excel workbook/HIPS Markov model demo_output.R")
+
 
 if __name__ == '__main__':
     unittest.main()
