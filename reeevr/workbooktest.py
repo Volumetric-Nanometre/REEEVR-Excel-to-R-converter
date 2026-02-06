@@ -91,6 +91,7 @@ class TestWorkbook1(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excel workbook/test_workbook_1_output.R")
 
 
 class TestWorkbook2(unittest.TestCase):
@@ -170,6 +171,7 @@ class TestWorkbook2(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excel workbook/test_workbook_2_output.R")
 
 class TestWorkbook3(unittest.TestCase):
     """
@@ -248,6 +250,7 @@ class TestWorkbook3(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excel workbook/test_workbook_3_output.R")
 
 class TestWorkbook4(unittest.TestCase):
     """
@@ -337,6 +340,7 @@ class TestWorkbook4(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         robjects.globalenv.clear()
+        os.remove("test/excel workbook/test_workbook_4_output.R")
 
 
 class TestTwoStateMarkovV2(unittest.TestCase):
@@ -384,7 +388,7 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         self.globalenv = robjects.globalenv
 
         self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
-        os.remove("test/excel workbook/psa.txt")
+
 
     def test_deterministic_conversion(self):
         """
@@ -441,6 +445,128 @@ class TestTwoStateMarkovV2(unittest.TestCase):
                                    f"- Potentially failed due to random sampling.\n"
                                    f"Run at least 3 times if it failed.\n "
                                    f"If fails 2 out of 3 times check program.", delta=131413.43*0.01)
+
+    @classmethod
+    def tearDownClass(self):
+        robjects.globalenv.clear()
+        os.remove("test/excel workbook/psa.txt")
+        os.remove("test/excel workbook/Two states Markov model_v0.2_output.R")
+
+class TestHIPSdemo(unittest.TestCase):
+    """
+
+    """
+    @classmethod
+    def setUpClass(self):
+        """
+        Test suite explicity loads an Excel file containing all functions and test cases.
+        File is then converted using the standard conversion process (minus culling).
+        File is then ran in R using rpy2, this generates an active R environment.
+        We then interrogate the R environment and compare to the expected value stored in Excel.
+        """
+        self.excelpath = "test/excel workbook/HIPS Markov model demo.xlsm"
+        self.rpath = "test/excel workbook/HIPS Markov model demo_output.R"
+        workbook = openpyxl.load_workbook(self.excelpath)
+        outputLang = 'R'
+        ignoredsheets = ["DSA results", "PSA results"]
+        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+
+        costs = [('Summary results', 'D6:D9')]
+        effs = [('Summary results', 'E6:E9')]
+        otherPSA = []
+        outputs = ROutputs(varconverter, "test/excel workbook/", otherPSA, costs, effs,
+                           ["Cemented", "Uncemented", "Hybrid", "Reverse Hybrid"], [('Setup and run','D14')], BCEA=False)
+        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader.read()
+        codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "test/excel workbook/", "HIPS Markov model demo_output.R")
+        codegen.second_pass()
+        codegen.order_code_snippets()
+        codegen.cyclic_prune()
+        codegen.generate_code(writeoutputs=True)
+
+        with open(self.rpath,"r+") as f:
+            file_data = f.read()
+            file_data = re.sub("numberOfRuns = 1000", "numberOfRuns = 3000", file_data)
+            file_data = re.sub("converter_validate = TRUE", "converter_validate = FALSE", file_data)
+            f.seek(0)
+            f.write(file_data)
+            f.truncate()
+
+        self.r_source = robjects.r['source']
+        self.r_source(self.rpath)
+        self.globalenv = robjects.globalenv
+
+        self.psaData = np.loadtxt("test/excel workbook/psa.txt", skiprows=1)
+        os.remove("test/excel workbook/psa.txt")
+
+    def test_deterministic_conversion(self):
+        """
+        Given no changes to the Excel file, returned files should always be the same.
+        We can test this using a cryptographic hash. If the contents of the files are different then the conversion
+        has not generated the same file.
+        """
+
+        hashOriginal = file_hash("test/excel workbook/HIPS Markov model demo.R")
+        hashGenerated = file_hash(self.rpath)
+        self.assertEqual(hashOriginal,hashGenerated, "Hash comparison failed - converter update has changed deterministic output\n")
+
+    def test_programatic_regression(self):
+        """
+        While the converted file may be correct, the individual functions called may change definition when called in R
+        or via incompatible changes from Excel. This test catches when these regressions may occur
+        """
+
+        avgVals= np.average(self.psaData, axis=0)
+
+        # Assume statistical accuracy to 1%
+        self.assertAlmostEqual(1973.04, avgVals[0],
+                               msg=f"PSA results C22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=1973.04 * 0.01)
+
+        self.assertAlmostEqual(3181.16, avgVals[1],
+                               msg=f"PSA results G22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=3181.16 * 0.01)
+
+        self.assertAlmostEqual(2562.80, avgVals[2],
+                               msg=f"PSA results K22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=2562.80 * 0.01)
+
+        self.assertAlmostEqual(2495.46, avgVals[3],
+                               msg=f"PSA results O22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=2495.46 * 0.01)
+
+        self.assertAlmostEqual(15.04, avgVals[4],
+                               msg=f"PSA results E22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=15.04 * 0.01)
+
+        self.assertAlmostEqual(15.11, avgVals[5],
+                               msg=f"PSA results I22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=15.11 * 0.01)
+
+        self.assertAlmostEqual(15.08, avgVals[6],
+                               msg=f"PSA results M22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=15.08 * 0.01)
+
+        self.assertAlmostEqual(15.07, avgVals[7],
+                               msg=f"PSA results O22 ... [FAIL]\n"
+                                   f"- Potentially failed due to random sampling.\n"
+                                   f"Run at least 3 times if it failed.\n "
+                                   f"If fails 2 out of 3 times check program.", delta=15.07 * 0.01)
+
 
     @classmethod
     def tearDownClass(self):
