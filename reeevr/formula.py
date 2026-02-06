@@ -201,7 +201,7 @@ if __name__ == "__main__":
     from formula import Tokenizer
     from excelast import ExcelAST
     tokenlist = Tokenizer('= 1 + IF(IF(sheet10!A1 = "yes", AVERAGE(A10:A20), 23), SUM(B10:V20),50) + '
-                          'IF(IF(OMG!A1 = "yes", SUM(A10:A20), 70),"shit",\'My stuff\'!A1) +20 + SUM(A10:A20)')
+                          'IF(IF(OMG!A1 = "yes", SUM(A10:A20), 70),\'My stuff\'!A1) +20 + SUM(A10:A20)')
 
     excelAST = ExcelAST(tokenlist)
     import jsonpickle
