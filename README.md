@@ -21,9 +21,20 @@ The converter is currently able to convert 111 functions, the list of which can 
 ## Usage
 To use this software you have two options:
 1. Download the source from the Release tab and run the python directly. The master python file to run is "reeevrconverter.py"
-2. Download the pre-compiled binary for windows. This will provide a .exe file that can be ran as usual.
+2. Download the pre-compiled binary for windows. This will provide a .exe file that can be ran as usual. You will still need to download the source folder to access the R code.
 
 We highly recommend reading the manual provided in this repository to understand how to use the software. 
+
+### I am unfamilar with Github
+To download the software you need to head to the Releases tab.
+- Make sure you are on the Code tab of the repository. 
+- Look on the right hand side and select the releases tab
+- If there are multiple releases, select the release version you wish to use (we always recommend the latest version)
+- Download the source code as either a .zip or .tar.gz file. You do not need both.
+- If you want the pre-compiled binary you can also download REEEVR-Excel-to-R-converter.exe
+
+
+
 
 ## Feedback and Issues
 
