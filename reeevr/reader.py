@@ -14,10 +14,10 @@ class ExcelReader:
         self.supportedlanguages = {'r' : RTransform}
         self.workbook = workbook
         self.unorderedcode = varconverter.definednames
-        self.ignoredsheets = ignoredsheets #  ['DSA', 'PSA', 'PSA results', 'DSA results']
+        self.ignoredsheets = ignoredsheets
         self.outputlang = outputlang.lower()
         self.converter = self.language_select()
-        self.varconverter = varconverter #VariableConverter(workbook,self.outputlang)
+        self.varconverter = varconverter
 
 
     def language_select(self):
@@ -40,19 +40,12 @@ class ExcelReader:
             if sheet in self.ignoredsheets:
                 continue
             allrows = list(self.workbook[sheet].rows)
-            for index, row in enumerate(allrows):#enumerate(self.workbook[sheet].iter_rows()):
+            for index, row in enumerate(allrows):
                 print(f"Reading row: {index}/{len(allrows)}")
-                #print(set(row))
 
                 for indexc,cell in enumerate(row):
                     mylist.append(self.cell_interpret(sheet,cell))
-                    #self.unorderedcode.update(self.cell_interpret(sheet,cell))
-                    #print(f"Reading cell: {indexc}/{len(row)}:{index}/{len(allrows)}")
-                #if(index%500):
-                #    self.unorderedcode.update(mycurrentdict)
-                #    mycurrentdict.clear()
-            #self.unorderedcode.update(mycurrentdict)
-            #mycurrentdict.clear()
+
         print(mylist[0])
         program_starts = time.time()
         for val in mylist:
