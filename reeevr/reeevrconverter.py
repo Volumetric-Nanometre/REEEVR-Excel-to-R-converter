@@ -1,11 +1,8 @@
 import sys
-import traceback
-
 from mainloop import MainLoop
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
-from PyQt6 import QtGui
 from QtDesignerGUIFile import Ui_ExcelToRConverterGUI
 import traceback
 

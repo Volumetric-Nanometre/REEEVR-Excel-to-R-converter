@@ -1,5 +1,4 @@
 
-
 class ROutputs:
 
     def __init__(self, converter, folder, PSAoutputs, costs, effs, treatments, willingnesstopay, BCEA = False):

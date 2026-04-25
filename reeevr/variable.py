@@ -1,5 +1,4 @@
 from openpyxl.utils.cell import cols_from_range
-from openpyxl.workbook.defined_name import DefinedName
 class VariableConverter:
     """
     Convert the Excel variables following a

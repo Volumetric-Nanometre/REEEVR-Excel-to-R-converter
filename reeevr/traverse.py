@@ -1,6 +1,4 @@
 import excelast as excelast
-from variable import VariableConverter
-
 
 class TraverseTree:
     def __init__(self, excelast, sheet, coordinate,varconverter):
