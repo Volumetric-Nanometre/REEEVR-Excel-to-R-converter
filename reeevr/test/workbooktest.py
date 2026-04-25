@@ -35,11 +35,10 @@ class TestWorkbook1(unittest.TestCase):
         self.excelpath = "excel workbook/test_workbook_1.xlsx"
         self.rpath = "excel workbook/test_workbook_1_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["PSA"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs, "", self.rpath)
         codegen.second_pass()
@@ -109,11 +108,10 @@ class TestWorkbook2(unittest.TestCase):
         self.excelpath = "excel workbook/test_workbook_2.xlsx"
         self.rpath = "excel workbook/test_workbook_2_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["PSA"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False )
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -188,11 +186,10 @@ class TestWorkbook3(unittest.TestCase):
         self.excelpath = "excel workbook/test_workbook_3.xlsx"
         self.rpath = "excel workbook/test_workbook_3_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["PSA"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -267,16 +264,15 @@ class TestWorkbook4(unittest.TestCase):
         self.excelpath = "excel workbook/test_workbook_4.xlsm"
         self.rpath = "excel workbook/test_workbook_4_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["PSA"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
 
         costs = [('Engine', 'E5:F5')]
         effs = [('Engine', 'E6:F6')]
         otherPSA = [('Engine', 'E7:F7')]
         outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Asprin", "Warfarin"], [('Frontend','E5')], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "test_workbook_4_output.R")
         codegen.second_pass()
@@ -358,16 +354,15 @@ class TestTwoStateMarkovV2(unittest.TestCase):
         self.excelpath = "excel workbook/Two states Markov model_v0.2.xlsm"
         self.rpath = "excel workbook/Two states Markov model_v0.2_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["PSA"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
 
         costs = [('Results', 'F12:F13')]
         effs = [('Results', 'G12:G13')]
         otherPSA = [('Results', 'H12:H13')]
         outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Drug A", "Drug B"], [('Model settings','N13')], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "Two states Markov model_v0.2_output.R")
         codegen.second_pass()
@@ -467,16 +462,15 @@ class TestHIPSdemo(unittest.TestCase):
         self.excelpath = "excel workbook/HIPS Markov model demo.xlsm"
         self.rpath = "excel workbook/HIPS Markov model demo_output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = ["DSA results", "PSA results"]
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
 
         costs = [('Summary results', 'D6:D9')]
         effs = [('Summary results', 'E6:E9')]
         otherPSA = []
         outputs = ROutputs(varconverter, "excel workbook/", otherPSA, costs, effs,
                            ["Cemented", "Uncemented", "Hybrid", "Reverse Hybrid"], [('Setup and run','D14')], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode, outputs, "excel workbook/", "HIPS Markov model demo_output.R")
         codegen.second_pass()
