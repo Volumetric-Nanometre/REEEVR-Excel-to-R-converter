@@ -18,7 +18,6 @@ class GUI(QMainWindow):
         self.ui = Ui_ExcelToRConverterGUI()
         self.ui.setupUi(self)
 
-        #self.setWindowIcon(QtGui.QIcon('C:\\Users\mo14776\\Downloads\\piqrayLyT.png'))
         self.setWindowTitle("REEEVR - Excel to R Converter")
 
         self.ui.OpenFileButton.clicked.connect(self.OpenFile)
