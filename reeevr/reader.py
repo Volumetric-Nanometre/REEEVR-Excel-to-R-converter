@@ -1,4 +1,3 @@
-#from openpyxl.formula import Tokenizer
 from tokenizer import Tokenizer
 from excelast import ExcelAST
 from formula import RTransform
@@ -10,23 +9,12 @@ class ExcelReader:
     dictionary.
     """
 
-    def __init__(self,varconverter,workbook,outputlang,ignoredsheets):
-        self.supportedlanguages = {'r' : RTransform}
+    def __init__(self,varconverter,workbook,ignoredsheets):
         self.workbook = workbook
         self.unorderedcode = varconverter.definednames
         self.ignoredsheets = ignoredsheets
-        self.outputlang = outputlang.lower()
-        self.converter = self.language_select()
         self.varconverter = varconverter
-
-
-    def language_select(self):
-
-        try:
-            return self.supportedlanguages[self.outputlang]
-
-        except KeyError:
-            raise KeyError(f"Selected output language not supported: {self.outputlang}")
+        self.formconverter = RTransform
 
     def read(self):
         """
@@ -69,7 +57,7 @@ class ExcelReader:
             tokenizer = Tokenizer(cell.value)
 
             cellAST = ExcelAST(tokenizer)
-            celltransform = self.converter(cellAST.AST,sheet,cell.coordinate,self.varconverter)
+            celltransform = self.formconverter(cellAST.AST,sheet,cell.coordinate,self.varconverter)
             celltransform.walk(celltransform.tree)
 
             unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables,cell.data_type]}

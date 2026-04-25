@@ -110,7 +110,7 @@ class MainLoop:
             self.update_progress()
 
             self.output("Initialise variable converter ... ",end="")
-            varconverter = VariableConverter(workbook,self.ignoredsheets, "R")
+            varconverter = VariableConverter(workbook,self.ignoredsheets)
             self.output("[SUCCESS]")
             self.update_progress()
 
@@ -120,7 +120,7 @@ class MainLoop:
             self.update_progress()
 
             self.output("Create reader ... ",end="")
-            a = ExcelReader(varconverter, workbook, "R", self.ignoredsheets)
+            a = ExcelReader(varconverter, workbook, self.ignoredsheets)
             self.output("[SUCCESS]")
             self.update_progress()
 

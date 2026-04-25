@@ -20,8 +20,6 @@ path = "C:/Users/mo14776/OneDrive - University of Bristol/Documents/Health Econo
 #path = "C:\\Users\\mo14776\\PycharmProjects\\Excel-R-compiler\\tests\\test workbooks\\Two states Markov model_v0.2_03Jul2023_PSA.xlsm"
 #path = "C:\\Users\\mo14776\\PycharmProjects\\Excel-R-compiler\\tests\\confidential workbooks\\Adolescent Obesity_02Sep2024_v1.0_Redacted.xlsm"
 
-
-outputLang = "R"
 print("Open workbook ... ",end="")
 workbook = openpyxl.load_workbook(path)
 print("[SUCCESS]")
@@ -35,13 +33,13 @@ willingnessToPay =[('Setup and run','D14')]#[('Results','E8')] #[('Setup and run
 ignoredsheets = ['DSA', 'PSA', 'PSA results', 'DSA results']#, 'State trace - Cemented', 'State trace - Hybrid', 'State trace - Reverse hybrid','State trace - Uncemented']
 print("[SUCCESS]")
 print("Initialise variable converter ... ",end="")
-varconverter = VariableConverter(workbook,ignoredsheets, outputLang)
+varconverter = VariableConverter(workbook,ignoredsheets)
 print("[SUCCESS]")
 print("Initialise outputs ... ",end="")
 outputs = ROutputs(varconverter, "", testOutput, costs, effs,treatmentNames,willingnessToPay, BCEA= False)
 print("[SUCCESS]")
 print("Create reader ... ",end="")
-a = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+a = ExcelReader(varconverter, workbook, ignoredsheets)
 print("[SUCCESS]")
 print("Read code ... ",end="")
 a.read()
