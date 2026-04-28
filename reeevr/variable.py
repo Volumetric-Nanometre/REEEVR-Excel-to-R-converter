@@ -1,16 +1,13 @@
 from openpyxl.utils.cell import cols_from_range
-from openpyxl.workbook.defined_name import DefinedName
 class VariableConverter:
     """
     Convert the Excel variables following a
     standard method for continuity
     """
 
-    def __init__(self,workbook,ignoredsheets,language):
+    def __init__(self,workbook,ignoredsheets):
         self.ignoredsheets = ignoredsheets
         self.definednames = {}
-        self.language = language.lower()
-        self.supportedlanguages = {'python': self.excel_range_to_list, 'r': self.excel_range_to_r_list}
         self.get_defined_names(workbook)
 
 
@@ -45,12 +42,9 @@ class VariableConverter:
             for definedName in workbook.defined_names.definedName:
 
                 cellName = str(definedName.attr_text).split("!")
-                #print(f"{definedName.name} {cellName}")
                 if len(cellName) != 2:
-                    #print(f"Cell length out of bounds: {definedName.name} {cellName}")
                     continue
                 if cellName[0].replace("'", "") in self.ignoredsheets:
-                    #print(f"Defined in ignored sheet: {definedName.name} {cellName}")
                     continue
 
                 if ':' in cellName[1]:
@@ -69,10 +63,8 @@ class VariableConverter:
 
                 cellName = str(definedName.attr_text).split("!")
                 if len(cellName) != 2:
-                    #print(f"Cell length out of bounds: {definedName.name} {cellName}")
                     continue
                 if cellName[0].replace("'", "") in self.ignoredsheets:
-                    #print(f"Defined in ignored sheet: {definedName.name} {cellName}")
                     continue
 
                 if ':' in cellName[1]:
@@ -81,7 +73,6 @@ class VariableConverter:
                     cellLocation = self.excel_cell_to_variable(cellName[0], cellName[1])
                     # {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]
                     code = f'{cellLocation}'
-                    #print(code)
                     list_of_variables = [f'{cellLocation}']
 
                 self.definednames[f'{definedName.name}'] = [code, list_of_variables, 'n']
@@ -110,10 +101,7 @@ class VariableConverter:
 
     def excel_range(self, sheet, rangecoordinates):
 
-        try:
-            return self.supportedlanguages[self.language](sheet, rangecoordinates)
-        except KeyError:
-            raise
+        return self.excel_range_to_r_list(sheet, rangecoordinates)
 
     def excel_range_to_list(self,sheet, rangecoordinates):
         """

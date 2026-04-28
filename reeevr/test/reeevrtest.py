@@ -24,11 +24,10 @@ class SimpleFunctionTests(unittest.TestCase):
         self.excelpath = "excelunit/simple-tests.xlsx"
         self.rpath = "excelunit/simple-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = []
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -88,11 +87,10 @@ class AdaptiveFunctionTests(unittest.TestCase):
         self.excelpath = "excelunit/adaptive-tests.xlsx"
         self.rpath = "excelunit/adaptive-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = []
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -150,11 +148,10 @@ class DistFunctionTests(unittest.TestCase):
         self.excelpath = "excelunit/reeevr-dist-tests.xlsx"
         self.rpath = "excelunit/reeevr-dist-tests-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = []
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -211,11 +208,10 @@ class ArrayValidationTests(unittest.TestCase):
         self.excelpath = "excelunit/array-validation-tests.xlsx"
         self.rpath = "excelunit/array-validation-tests-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = []
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets )
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()
@@ -278,11 +274,10 @@ class REEEVRFunctionTests(unittest.TestCase):
         self.excelpath = "excelunit/reeevr-tests.xlsx"
         self.rpath = "excelunit/reeevr-test-output.R"
         workbook = openpyxl.load_workbook(self.excelpath)
-        outputLang = 'R'
         ignoredsheets = []
-        varconverter = VariableConverter(workbook, ignoredsheets, outputLang)
+        varconverter = VariableConverter(workbook, ignoredsheets)
         outputs = ROutputs(varconverter, "", [], [], [], [], [], BCEA=False)
-        reader = ExcelReader(varconverter, workbook, outputLang, ignoredsheets)
+        reader = ExcelReader(varconverter, workbook, ignoredsheets)
         reader.read()
         codegen = CodeGen(varconverter, reader.unorderedcode,outputs , "", self.rpath)
         codegen.second_pass()

@@ -1,4 +1,3 @@
-#from openpyxl.formula import Tokenizer
 from tokenizer import Tokenizer
 from excelast import ExcelAST
 from formula import RTransform
@@ -10,23 +9,12 @@ class ExcelReader:
     dictionary.
     """
 
-    def __init__(self,varconverter,workbook,outputlang,ignoredsheets):
-        self.supportedlanguages = {'r' : RTransform}
+    def __init__(self,varconverter,workbook,ignoredsheets):
         self.workbook = workbook
         self.unorderedcode = varconverter.definednames
-        self.ignoredsheets = ignoredsheets #  ['DSA', 'PSA', 'PSA results', 'DSA results']
-        self.outputlang = outputlang.lower()
-        self.converter = self.language_select()
-        self.varconverter = varconverter #VariableConverter(workbook,self.outputlang)
-
-
-    def language_select(self):
-
-        try:
-            return self.supportedlanguages[self.outputlang]
-
-        except KeyError:
-            raise KeyError(f"Selected output language not supported: {self.outputlang}")
+        self.ignoredsheets = ignoredsheets
+        self.varconverter = varconverter
+        self.formconverter = RTransform
 
     def read(self):
         """
@@ -40,19 +28,12 @@ class ExcelReader:
             if sheet in self.ignoredsheets:
                 continue
             allrows = list(self.workbook[sheet].rows)
-            for index, row in enumerate(allrows):#enumerate(self.workbook[sheet].iter_rows()):
+            for index, row in enumerate(allrows):
                 print(f"Reading row: {index}/{len(allrows)}")
-                #print(set(row))
 
                 for indexc,cell in enumerate(row):
                     mylist.append(self.cell_interpret(sheet,cell))
-                    #self.unorderedcode.update(self.cell_interpret(sheet,cell))
-                    #print(f"Reading cell: {indexc}/{len(row)}:{index}/{len(allrows)}")
-                #if(index%500):
-                #    self.unorderedcode.update(mycurrentdict)
-                #    mycurrentdict.clear()
-            #self.unorderedcode.update(mycurrentdict)
-            #mycurrentdict.clear()
+
         print(mylist[0])
         program_starts = time.time()
         for val in mylist:
@@ -76,7 +57,7 @@ class ExcelReader:
             tokenizer = Tokenizer(cell.value)
 
             cellAST = ExcelAST(tokenizer)
-            celltransform = self.converter(cellAST.AST,sheet,cell.coordinate,self.varconverter)
+            celltransform = self.formconverter(cellAST.AST,sheet,cell.coordinate,self.varconverter)
             celltransform.walk(celltransform.tree)
 
             unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables,cell.data_type]}

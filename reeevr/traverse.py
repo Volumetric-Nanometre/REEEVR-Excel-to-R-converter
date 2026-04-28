@@ -1,6 +1,4 @@
 import excelast as excelast
-from variable import VariableConverter
-
 
 class TraverseTree:
     def __init__(self, excelast, sheet, coordinate,varconverter):
@@ -56,7 +54,6 @@ class TraverseTree:
 
         try:
             return self.formula_converter(node.name, node.params)
-            #return self.function_transformations[node.name](node.params)
         except KeyError:
             raise KeyError("Function not in transform list")
 

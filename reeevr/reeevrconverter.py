@@ -1,11 +1,8 @@
 import sys
-import traceback
-
 from mainloop import MainLoop
 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt6.QtCore import Qt
-from PyQt6 import QtGui
 from QtDesignerGUIFile import Ui_ExcelToRConverterGUI
 import traceback
 
@@ -18,7 +15,6 @@ class GUI(QMainWindow):
         self.ui = Ui_ExcelToRConverterGUI()
         self.ui.setupUi(self)
 
-        #self.setWindowIcon(QtGui.QIcon('C:\\Users\mo14776\\Downloads\\piqrayLyT.png'))
         self.setWindowTitle("REEEVR - Excel to R Converter")
 
         self.ui.OpenFileButton.clicked.connect(self.OpenFile)

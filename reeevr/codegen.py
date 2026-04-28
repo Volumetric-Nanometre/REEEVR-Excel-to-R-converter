@@ -58,7 +58,6 @@ class CodeGen:
             errorstring = "".join([f'{item[0]} : {item[1][1]}\n' for item in remainingcode.items()])
             with open("missing-cells.txt","w") as f:
                 f.write(errorstring)
-            #raise KeyError(f"Code cannot be ordered as variables are missing their corresponding dependancies. See missing-cells.txt")
 
 
     def second_pass(self):

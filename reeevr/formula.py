@@ -1,6 +1,5 @@
 from traverse import TraverseTree
 
-
 class RTransform(TraverseTree):
     """
     Class that deals explicitly in Excel -> R
