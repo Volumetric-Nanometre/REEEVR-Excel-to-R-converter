@@ -140,3 +140,5 @@ reeevr-R/*.tar.gz
 .RData
 .Rhistory
 ~$*
+/lib64/
+/bin/
