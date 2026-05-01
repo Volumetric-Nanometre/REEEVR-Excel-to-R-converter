@@ -10,7 +10,7 @@ try:
 except:
     pass
 
-path = "C:/Users/mieha/Documents/GitHub/REEEVR-Excel-to-R-converter/Examples/HIPS model/HIPS Markov model demo.xlsm"
+path = "../Examples/HIPS model/HIPS Markov model demo.xlsm"
 
 print("Open workbook ... ",end="")
 workbook = openpyxl.load_workbook(path)
