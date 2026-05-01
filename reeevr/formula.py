@@ -193,21 +193,3 @@ class RTransform(TraverseTree):
         """
         return f"pi"
 
-
-
-if __name__ == "__main__":
-
-    from formula import Tokenizer
-    from excelast import ExcelAST
-    tokenlist = Tokenizer('= 1 + IF(IF(sheet10!A1 = "yes", AVERAGE(A10:A20), 23), SUM(B10:V20),50) + '
-                          'IF(IF(OMG!A1 = "yes", SUM(A10:A20), 70),\'My stuff\'!A1) +20 + SUM(A10:A20)')
-
-    excelAST = ExcelAST(tokenlist)
-    import jsonpickle
-
-    serialized = jsonpickle.encode(excelAST.AST)
-    #print(json.dumps(json.loads(serialized), indent=4))
-
-    test = RTransform(excelAST.AST, "Sheet10", "C10")
-    test.walk(test.tree)
-    print(test.code)

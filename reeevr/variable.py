@@ -197,12 +197,3 @@ class VariableConverter:
         varname = self.excel_cell_to_variable(sheet, cell.coordinate)
 
         return {varname :[cell.value,[],cell.data_type]}
-
-
-if __name__ == "__main__":
-    import openpyxl
-    sheet = "sheet 1"
-    range = "A1"
-    wb = openpyxl.load_workbook("C:/Users/mieha/Documents/REEVER/Test workbooks/test_workbook_3.xlsx", keep_vba=True)
-    test = VariableConverter(wb)
-    print(test.excel_range_to_list(sheet,range))

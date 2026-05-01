@@ -67,9 +67,3 @@ class ExcelReader:
 
         return unorderedcell
 
-if __name__ == "__main__":
-
-    path = "C:/Users/mo14776/OneDrive - University of Bristol/Documents/Health Economics/REEVER/Examples/Tests for the Excel- R conversion/test_workbook_3.xlsx"
-    a=ExcelReader(path,"r")
-
-    a.read()

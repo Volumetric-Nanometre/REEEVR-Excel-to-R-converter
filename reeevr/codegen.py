@@ -241,18 +241,3 @@ class CodeGen:
                 temp[0] = 'NA'
                 self.culledcode[item[0]] = temp
 
-if __name__ == "__main__":
-
-    from reader import ExcelReader
-
-    path = "../../tests/test workbooks/test_workbook_3.xlsx"
-    a=ExcelReader(path,"R")
-
-    a.read()
-    outputs = ['Frontend_E8', 'Frontend_E9']
-    b = CodeGen(a.unorderedcode, outputs, codefile="test_output.R")
-
-    b.second_pass()
-    b.order_code_snippets()
-    b.cull_code_snippets()
-    b.generate_code()

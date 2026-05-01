@@ -76,16 +76,3 @@ class ROutputs:
             bcea_code += f"BCEA_all_output_loop(costs,effs,treatments,{self.willingnesstopay[0]})\n"
 
         return bcea_code
-
-
-if __name__ == "__main__":
-    printOutputs = ["test1", "test2"]
-    fileOutputs = ["test3","test4"]
-    dataframeOutputs = ["test5", "test6"]
-
-    outputs = ROutputs()
-    outputs.printOutputs = printOutputs
-    outputs.fileOutputs = fileOutputs
-    outputs.dataframeOutputs = dataframeOutputs
-
-    print(outputs.add_output_code())
