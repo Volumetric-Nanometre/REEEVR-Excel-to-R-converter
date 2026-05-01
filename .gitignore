@@ -142,3 +142,4 @@ reeevr-R/*.tar.gz
 ~$*
 /lib64/
 /bin/
+pyvenv.cfg
