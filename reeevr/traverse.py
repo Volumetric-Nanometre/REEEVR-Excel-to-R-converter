@@ -1,4 +1,7 @@
 import excelast as excelast
+import logging
+
+logger = logging.getLogger(__name__)
 
 class TraverseTree:
     def __init__(self, excelast, sheet, coordinate,varconverter):
@@ -55,6 +58,7 @@ class TraverseTree:
         try:
             return self.formula_converter(node.name, node.params)
         except KeyError:
+            logger.error(f"Unknown node: {node}")
             raise KeyError("Function not in transform list")
 
     def _ast_transform(self, node):

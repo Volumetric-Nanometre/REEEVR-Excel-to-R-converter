@@ -1,4 +1,8 @@
 from openpyxl.utils.cell import cols_from_range
+import logging
+
+logger = logging.getLogger(__name__)
+
 class VariableConverter:
     """
     Convert the Excel variables following a

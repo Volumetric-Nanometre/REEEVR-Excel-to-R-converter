@@ -2,6 +2,10 @@ import copy
 import time
 import re
 import openpyxl.utils.cell as opxlUtilCell
+import logging
+
+logger = logging.getLogger(__name__)
+
 class CodeGen:
     """
     Takes unordered code output then:
@@ -54,10 +58,11 @@ class CodeGen:
             count += 1
 
         if count == 100:
-
             errorstring = "".join([f'{item[0]} : {item[1][1]}\n' for item in remainingcode.items()])
             with open("missing-cells.txt","w") as f:
                 f.write(errorstring)
+            logger.warning(errorstring)
+
 
 
     def second_pass(self):
@@ -69,6 +74,8 @@ class CodeGen:
             if item[1][2] == "f":
 
                 if "excel_offset" in item[1][0]:
+
+                    logger.debug("Handle excel_offset")
 
                     splittext = re.search(r'\((.*)\)',item[1][0]).group(1)
                     restOfString = item[1][0].split(splittext)
@@ -161,6 +168,8 @@ class CodeGen:
         starttime = time.time()
         while(1):
             print(f"prune round {numcull} - total prune time {time.time()-starttime}s")
+            logger.info(f"prune round {numcull} - total prune time {time.time()-starttime}s")
+
             staringlen = len(interimculled)
             interimdependantvars = copy.deepcopy(self.dependantvars)
             preprunedcode = copy.deepcopy(interimculled)
@@ -192,6 +201,7 @@ class CodeGen:
                 break
         self.culledcode = interimculled
         self.none_strip()
+
     def generate_code(self, writeoutputs=True):
         """
         {'variable' : ["codeified string", ['list','of','contained','vars'],cell.data_type]}

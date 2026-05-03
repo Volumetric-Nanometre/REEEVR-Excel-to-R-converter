@@ -1,3 +1,6 @@
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ROutputs:
 
@@ -31,7 +34,9 @@ class ROutputs:
     def output_cells(self):
 
         outputCells = list(set(self.PSAOutputs + self.costs + self.effectiveness + self.willingnesstopay))
+        logger.debug(f"outputCells: {outputCells}")
         return outputCells
+
     def add_output_code(self):
 
         fullOutputCode = ""

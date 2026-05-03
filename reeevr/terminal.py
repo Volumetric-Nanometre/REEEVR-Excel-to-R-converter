@@ -4,11 +4,18 @@ from outputs import ROutputs
 from variable import VariableConverter
 import openpyxl
 import os
+import datetime
+import logging
+
+logger = logging.getLogger(__name__)
 
 try:
     os.remove("missing-func.log")
 except:
     pass
+
+logging.basicConfig(filename=f"Log Files/{datetime.datetime.now()}-reeevr-logging.log",level=logging.DEBUG)
+logger.info("Starting R-Converter from terminal.py")
 
 path = "../Examples/HIPS model/HIPS Markov model demo.xlsm"
 

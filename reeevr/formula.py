@@ -1,4 +1,7 @@
 from traverse import TraverseTree
+import logging
+
+logger = logging.getLogger(__name__)
 
 class RTransform(TraverseTree):
     """
@@ -56,15 +59,20 @@ class RTransform(TraverseTree):
     def formula_converter(self,input,params):
 
         if input in self.simple_transform:
+            logger.debug(f"simple convert: {input}")
             return self.simple_convert(input,params)
 
         elif input in self.reeevr_transform:
+            logger.debug(f"REEEVR convert: {input} - {params}")
             return self.reeevr_convert(input,params)
 
         elif input in self.adaptive_transform.keys():
+            logger.debug(f"Adaptive convert: {input} - {params}")
             return self.adaptive_transform[input](params)
         else:
             simplesyntax = self.walk(params)
+
+            logger.warning(f"Missing function: {input} - {simplesyntax}")
             with open("missing-func.log", "a+") as f:
                 f.write(f"{input} - {simplesyntax}\n")
             return f"UNKNOWN_FUNCTION_SEE_LOG_FILE({''.join(simplesyntax)}"

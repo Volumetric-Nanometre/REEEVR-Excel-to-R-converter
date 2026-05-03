@@ -2,6 +2,9 @@ from tokenizer import Tokenizer
 from excelast import ExcelAST
 from formula import RTransform
 import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ExcelReader:
     """
@@ -24,22 +27,21 @@ class ExcelReader:
         """
         mylist = []
         for sheet in self.workbook.sheetnames:
-            print(f"Reading sheet: {sheet}")
+            logger.info(f"Reading sheet: {sheet}")
             if sheet in self.ignoredsheets:
                 continue
             allrows = list(self.workbook[sheet].rows)
             for index, row in enumerate(allrows):
-                print(f"Reading row: {index}/{len(allrows)}")
+                logger.info(f"Reading row: {index}/{len(allrows)}")
 
                 for indexc,cell in enumerate(row):
                     mylist.append(self.cell_interpret(sheet,cell))
 
-        print(mylist[0])
         program_starts = time.time()
         for val in mylist:
             self.unorderedcode.update(val)
         now = time.time()
-        print(f"{now - program_starts}")
+        logger.info(f"Time taken: {now - program_starts}")
 
     def cell_interpret(self,sheet,cell):
 
@@ -63,7 +65,9 @@ class ExcelReader:
             unorderedcell = {celltransform.outputvarname :[celltransform.code,celltransform.variables,cell.data_type]}
 
         else:
-            raise ValueError("Value type not recognised")
+            logger.error(f"Value type not recognised: {cell.data_type}")
+
+            raise ValueError(f"Value type not recognised: {cell.data_type}")
 
         return unorderedcell
 

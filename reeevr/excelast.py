@@ -1,4 +1,7 @@
 from tokenizer import Tokenizer
+import logging
+
+logger = logging.getLogger(__name__)
 
 class ParseNode:
 
@@ -77,6 +80,7 @@ class ExcelAST:
                 self.count += 1
                 nodelist.append(ParseNode("Separator", token.value))
             else:
+                logger.error("Unrecognized token type: " + token.type)
                 raise ValueError(f"{token.type} not a recognised type")
 
         return nodelist
